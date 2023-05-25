@@ -1,0 +1,18 @@
+<div class="container">
+    <form [formGroup]="createTokenForm" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label for="tokenName">Token Name</label>
+        <input type="text" class="form-control" id="tokenName" formControlName="tokenName">
+      </div>
+      <div class="form-group">
+        <label for="tokenSymbol">Token Symbol</label>
+        <input type="text" class="form-control" id="tokenSymbol" formControlName="tokenSymbol">
+      </div>
+      <div class="form-group">
+        <label for="totalSupply">Total Supply</label>
+        <input type="number" class="form-control" id="totalSupply" formControlName="totalSupply">
+      </div>
+      <button type="submit" class="btn btn-primary">Create Token</button>
+    </form>
+</div>
+  
