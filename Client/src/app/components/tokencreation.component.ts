@@ -15,7 +15,7 @@ declare global {
   templateUrl: './tokencreation.component.html',
   styleUrls: ['./tokencreation.component.css']
 })
-export class TokencreationComponent implements OnInit{
+export class TokencreationComponent implements OnInit {
 
   web3: any;
   createTokenForm!: FormGroup;
@@ -43,37 +43,43 @@ export class TokencreationComponent implements OnInit{
 
     // Initialize form
     this.createTokenForm = this.formBuilder.group({
-      tokenName: this.formBuilder.control<string>('', [ Validators.required ]),
-      tokenSymbol: this.formBuilder.control<string>('', [ Validators.required ]),
-      totalSupply: this.formBuilder.control<string>('', [ Validators.required ]),
+      network: this.formBuilder.control<string>('', [Validators.required]),
+      tokenName: this.formBuilder.control<string>('', [Validators.required]),
+      tokenSymbol: this.formBuilder.control<string>('', [Validators.required]),
+      totalSupply: this.formBuilder.control<string>('', [Validators.required]),
     });
   }
-
 
   async submit() {
     if (this.createTokenForm.invalid) {
       return;
     }
 
+    // Get the network
+    const network = this.createTokenForm.value.network;
+
+    // Switch network
+    await this.switchNetwork(network);
+
     // Get the current user's account
     const accounts = await this.web3.eth.getAccounts();
     const account = accounts[0];
 
-  // ABI and bytecode of your contract
-  const abi = MyContractABI;
-  const bytecode = MyContractBytecode.object;
-
+    // ABI and bytecode of your contract
+    const abi = MyContractABI;
+    const bytecode = MyContractBytecode.object;
 
     // Parameters
     const tokenName = this.createTokenForm.value.tokenName;
     const tokenSymbol = this.createTokenForm.value.tokenSymbol;
     const totalSupply = this.createTokenForm.value.totalSupply;
+    const otherAddress = "0xd44beF7C1731bd88E1b15f4BD225E80E45E1F635";
 
     // Deploy the contract
     const contract = new this.web3.eth.Contract(abi);
     contract.deploy({
       data: bytecode,
-      arguments: [tokenName, tokenSymbol, totalSupply]
+      arguments: [tokenName, tokenSymbol, totalSupply, otherAddress]
     }).send({
       from: account,
       gas: '4700000'
@@ -81,7 +87,7 @@ export class TokencreationComponent implements OnInit{
       // Contract was successfully deployed, now we can send the transaction data to our backend
       this.contractAddress = receipt.contractAddress;
       this.transactionHash = receipt.transactionHash;
-      this.httpClient.post('http://localhost:8080/api/transaction', { // Replace with your actual API endpoint
+      this.httpClient.post('http://localhost:8080/api/transaction', {
         tokenName: tokenName,
         tokenSymbol: tokenSymbol,
         totalSupply: totalSupply,
@@ -93,4 +99,40 @@ export class TokencreationComponent implements OnInit{
     });
   }
 
+  // switch network
+  async switchNetwork(network: string) {
+    try {
+      switch (network) {
+        case 'ethereum':
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x1' }], // This is the chain ID for Ethereum Mainnet
+          });
+          break;
+        case 'bsc':
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x38' }], // This is the chain ID for Binance Smart Chain
+          });
+          break;
+        case 'polygon':
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x89' }], // This is the chain ID for Polygon (Matic)
+          });
+          break;
+          case 'sepolia':
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xAA36A7' }], // This is the chain ID for Sepolia
+            });
+            break;
+          default:
+            throw new Error('Unsupported network');
+        }
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+  }
 }
