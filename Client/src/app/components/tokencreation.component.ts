@@ -65,7 +65,7 @@ export class TokencreationComponent implements OnInit {
     const accounts = await this.web3.eth.getAccounts();
     const account = accounts[0];
 
-    // ABI and bytecode of your contract
+    // ABI and bytecode of contract
     const abi = MyContractABI;
     const bytecode = MyContractBytecode.object;
 
@@ -84,7 +84,7 @@ export class TokencreationComponent implements OnInit {
       from: account,
       gas: '4700000'
     }).on('receipt', (receipt: any) => {
-      // Contract was successfully deployed, now we can send the transaction data to our backend
+      // Contract was successfully deployed, now can send the transaction data to our backend
       this.contractAddress = receipt.contractAddress;
       this.transactionHash = receipt.transactionHash;
       this.httpClient.post('http://localhost:8080/api/transaction', {
