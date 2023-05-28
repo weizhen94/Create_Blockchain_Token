@@ -13,6 +13,20 @@ public class TokenCachingRepo {
     @Autowired
     private MongoTemplate template;
 
+//this is the way to type the JsonBody in AdvancedRestClient
+/*
+{
+"transactionHash": "123", 
+"network": "eth", 
+"tokenName": "ABCoin",
+"tokenSymbol": "ABC",
+"totalSupply": "1000", 
+"userAddress": "0xd",
+"otherAddress": "0xe",
+"contractAddress": "0xf", 
+"timestamp": "2023-05-06T14:10:26.351+0000"
+}
+*/
     //This method takes a TokenCreation object as a parameter and saves it to the "creation" collection in the MongoDB database.
     public void saveTokenCreation(TokenCaching tokenCache) {
         //It first creates a new Document object, which represents a MongoDB document that will be inserted into the database.

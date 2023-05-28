@@ -5,6 +5,8 @@ import Web3 from 'web3';
 
 import MyContractABI from './MyContractABI.json';
 import MyContractBytecode from './MyContractBytecode.json';
+import { TokenCreationService } from '../services/token-creation.service';
+import { TokenCaching } from '../models/token-caching';
 
 declare global {
   interface Window { ethereum: any; web3: any; }
@@ -22,7 +24,7 @@ export class TokencreationComponent implements OnInit {
   contractAddress!: string;
   transactionHash!: string;
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient) { }
+  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private tokenCreationService: TokenCreationService) { }
 
   ngOnInit() {
     // Initialize web3
@@ -47,7 +49,6 @@ export class TokencreationComponent implements OnInit {
       tokenName: this.formBuilder.control<string>('', [Validators.required]),
       tokenSymbol: this.formBuilder.control<string>('', [Validators.required]),
       totalSupply: this.formBuilder.control<string>('', [Validators.required]),
-      timestamp: new Date().toISOString(), 
     });
   }
 
@@ -85,16 +86,22 @@ export class TokencreationComponent implements OnInit {
       from: account,
       gas: '4700000'
     }).on('receipt', (receipt: any) => {
-      // Contract was successfully deployed, now can send the transaction data to our backend
       this.contractAddress = receipt.contractAddress;
       this.transactionHash = receipt.transactionHash;
-      this.httpClient.post('http://localhost:8080/api/transaction', {
+      
+      const tokenCaching: TokenCaching = {
+        transactionHash: this.transactionHash,
+        network: network,
         tokenName: tokenName,
         tokenSymbol: tokenSymbol,
         totalSupply: totalSupply,
-        transactionHash: this.transactionHash,
-        contractAddress: this.contractAddress
-      }).subscribe(response => {
+        userAddress: account,
+        otherAddress: otherAddress,
+        contractAddress: this.contractAddress,
+        timestamp: new Date().toISOString(),
+      }
+    
+      this.tokenCreationService.addTokenCaching(tokenCaching).subscribe(response => {
         console.log(response);
       });
     });
