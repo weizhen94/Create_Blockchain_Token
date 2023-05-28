@@ -47,6 +47,7 @@ export class TokencreationComponent implements OnInit {
       tokenName: this.formBuilder.control<string>('', [Validators.required]),
       tokenSymbol: this.formBuilder.control<string>('', [Validators.required]),
       totalSupply: this.formBuilder.control<string>('', [Validators.required]),
+      timestamp: new Date().toISOString(), 
     });
   }
 
