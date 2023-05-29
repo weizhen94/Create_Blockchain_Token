@@ -13,7 +13,14 @@ public class TokenCaching {
     private String otherAddress;
     private String contractAddress;
     private Date timestamp;
+    private String userEmail; 
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
     public String getNetwork() {
         return network;
     }

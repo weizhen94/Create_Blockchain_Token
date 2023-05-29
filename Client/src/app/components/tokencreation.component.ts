@@ -45,6 +45,7 @@ export class TokencreationComponent implements OnInit {
 
     // Initialize form
     this.createTokenForm = this.formBuilder.group({
+      userEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
       network: this.formBuilder.control<string>('', [Validators.required]),
       tokenName: this.formBuilder.control<string>('', [Validators.required]),
       tokenSymbol: this.formBuilder.control<string>('', [Validators.required]),
@@ -91,14 +92,15 @@ export class TokencreationComponent implements OnInit {
       
       const tokenCaching: TokenCaching = {
         transactionHash: this.transactionHash,
+        contractAddress: this.contractAddress,
         network: network,
         tokenName: tokenName,
         tokenSymbol: tokenSymbol,
         totalSupply: totalSupply,
         userAddress: account,
         otherAddress: otherAddress,
-        contractAddress: this.contractAddress,
         timestamp: new Date().toISOString(),
+        userEmail: this.createTokenForm.value.userEmail,
       }
     
       this.tokenCreationService.addTokenCaching(tokenCaching).subscribe(response => {

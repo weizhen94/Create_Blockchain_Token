@@ -9,5 +9,6 @@ export interface TokenCaching {
     otherAddress: String;
     contractAddress: String;
     timestamp: string;
+    userEmail: string; 
 
 }

@@ -33,13 +33,14 @@ public class TokenCachingRepo {
         Document doc = new Document(); 
         //Then, it populates the Document object with the fields of the Comment object (i.e., text, timestamp, and characterId).
         doc.put("transactionHash", tokenCache.getTransactionHash()); 
+        doc.put("contractAddress", tokenCache.getContractAddress()); 
+        doc.put("userAddress", tokenCache.getUserAddress()); 
+        doc.put("userEmail", tokenCache.getUserEmail());
         doc.put("network", tokenCache.getNetwork()); 
         doc.put("tokenName", tokenCache.getTokenName()); 
         doc.put("tokenSymbol", tokenCache.getTokenSymbol()); 
         doc.put("totalSupply", tokenCache.getTotalSupply()); 
-        doc.put("userAddress", tokenCache.getUserAddress()); 
         doc.put("otherAddress", tokenCache.getOtherAddress()); 
-        doc.put("contractAddress", tokenCache.getContractAddress()); 
         doc.put("timestamp", tokenCache.getTimestamp()); 
         //the template.insert() method is called with the Document object and the collection name "comment". 
         //This method inserts the Document object into the "comment" collection in the MongoDB database.

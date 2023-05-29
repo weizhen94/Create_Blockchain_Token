@@ -1,6 +1,13 @@
 <div class="container">
     <form [formGroup]="createTokenForm" (ngSubmit)="submit()">
-      <!-- Added network selection dropdown -->
+        
+        <!-- Add User email -->
+        <div class="form-group">
+            <label for="userEmail"> Your Email</label>
+            <input type="email" class="form-control" id="userEmail" formControlName="userEmail">
+        </div>
+          
+      <!-- Network selection dropdown -->
       <div class="form-group">
         <label for="network">Network</label>
         <select class="form-control" id="network" formControlName="network">
@@ -10,7 +17,7 @@
             <option value="sepolia">Sepolia</option>
           </select>          
       </div>
-      <!-- Rest of the form remains the same -->
+      <!-- Rest of the form -->
       <div class="form-group">
         <label for="tokenName">Token Name</label>
         <input type="text" class="form-control" id="tokenName" formControlName="tokenName">
