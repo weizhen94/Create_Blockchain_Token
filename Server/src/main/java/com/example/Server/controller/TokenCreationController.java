@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Server.model.TokenCaching;
+import com.example.Server.service.EmailService;
 import com.example.Server.service.TokenCachingService;
 
 @RestController
@@ -16,8 +17,12 @@ public class TokenCreationController {
     @Autowired
     private TokenCachingService tokenCachingService; 
 
+    @Autowired
+    private EmailService emailService; 
+
     @PostMapping("/transaction")
     public TokenCaching saveTokenTransaction(@RequestBody TokenCaching tokenCaching) {
+        emailService.sendEmail(tokenCaching);
         return tokenCachingService.cacheTokenCreation(tokenCaching);
     }
     

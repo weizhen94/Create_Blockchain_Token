@@ -13,8 +13,8 @@ public class TokenCachingService {
     private TokenCachingRepo tokenCachingRepo;
 
     public TokenCaching cacheTokenCreation(TokenCaching tokenCaching) {
-        System.out.println("Token caching saved!");
         tokenCachingRepo.saveTokenCreation(tokenCaching);
+        System.out.println("Token caching saved!");
         return tokenCaching;
     }
     
