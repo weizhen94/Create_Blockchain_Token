@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    color: #333;
+    border-radius: 5px;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+button {
+    align-self: flex-end;
+    color: #FFF; 
+    background-color: #344955;
+}
+
+button:hover {
+    background-color: #28384c; 
+}

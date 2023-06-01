@@ -1,35 +1,39 @@
-<div class="container">
+<div class="container mat-typography">
     <form [formGroup]="createTokenForm" (ngSubmit)="submit()">
         
         <!-- Add User email -->
-        <div class="form-group">
-            <label for="userEmail"> Your Email</label>
-            <input type="email" class="form-control" id="userEmail" formControlName="userEmail">
-        </div>
+        <mat-form-field appearance="fill">
+            <mat-label>Your Email</mat-label>
+            <input matInput type="email" id="userEmail" formControlName="userEmail">
+        </mat-form-field>
           
-      <!-- Network selection dropdown -->
-      <div class="form-group">
-        <label for="network">Network</label>
-        <select class="form-control" id="network" formControlName="network">
-            <option value="ethereum">Ethereum</option>
-            <option value="bsc">Binance Smart Chain</option>
-            <option value="polygon">Polygon (Matic)</option>
-            <option value="sepolia">Sepolia</option>
-          </select>          
-      </div>
-      <!-- Rest of the form -->
-      <div class="form-group">
-        <label for="tokenName">Token Name</label>
-        <input type="text" class="form-control" id="tokenName" formControlName="tokenName">
-      </div>
-      <div class="form-group">
-        <label for="tokenSymbol">Token Symbol</label>
-        <input type="text" class="form-control" id="tokenSymbol" formControlName="tokenSymbol">
-      </div>
-      <div class="form-group">
-        <label for="totalSupply">Total Supply</label>
-        <input type="number" class="form-control" id="totalSupply" formControlName="totalSupply">
-      </div>
-      <button type="submit" class="btn btn-primary">Create Token</button>
+        <!-- Network selection dropdown -->
+        <mat-form-field appearance="fill">
+            <mat-label>Network</mat-label>
+            <mat-select id="network" formControlName="network">
+                <mat-option value="ethereum">Ethereum</mat-option>
+                <mat-option value="bsc">Binance Smart Chain</mat-option>
+                <mat-option value="polygon">Polygon (Matic)</mat-option>
+                <mat-option value="sepolia">Sepolia</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Rest of the form -->
+        <mat-form-field appearance="fill">
+            <mat-label>Token Name</mat-label>
+            <input matInput type="text" id="tokenName" formControlName="tokenName">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Token Symbol</mat-label>
+            <input matInput type="text" id="tokenSymbol" formControlName="tokenSymbol">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Total Supply</mat-label>
+            <input matInput type="number" id="totalSupply" formControlName="totalSupply">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Create Token</button>
     </form>
 </div>

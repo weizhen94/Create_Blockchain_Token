@@ -1,0 +1,14 @@
+mat-toolbar {
+    background-color: #252525;
+  }
+  
+  mat-toolbar button {
+    color: #FFF;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  mat-toolbar button:hover {
+    color: #9f9f9f;
+  }
+  

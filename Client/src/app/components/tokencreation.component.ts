@@ -5,7 +5,7 @@ import Web3 from 'web3';
 
 import MyContractABI from './MyContractABI.json';
 import MyContractBytecode from './MyContractBytecode.json';
-import { TokenCreationService } from '../services/token-creation.service';
+import { TokenService } from '../services/token.service';
 import { TokenCaching } from '../models/token-caching';
 
 declare global {
@@ -24,7 +24,7 @@ export class TokencreationComponent implements OnInit {
   contractAddress!: string;
   transactionHash!: string;
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private tokenCreationService: TokenCreationService) { }
+  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private tokenService: TokenService) { }
 
   ngOnInit() {
     // Initialize web3
@@ -103,7 +103,7 @@ export class TokencreationComponent implements OnInit {
         userEmail: this.createTokenForm.value.userEmail,
       }
     
-      this.tokenCreationService.addTokenCaching(tokenCaching).subscribe(response => {
+      this.tokenService.addTokenCaching(tokenCaching).subscribe(response => {
         console.log(response);
       });
     });
