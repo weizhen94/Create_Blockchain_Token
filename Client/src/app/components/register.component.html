@@ -12,9 +12,9 @@
         </mat-form-field>
 
      <p>
-        <code *ngIf="!(registerForm?.get('password')?.touched && registerForm?.get('password')?.invalid)">
+        <code class="password-info" *ngIf="!(registerForm?.get('password')?.touched && registerForm?.get('password')?.invalid)">
             Password must contain: 8 characters, upper & lowercase letter, number and special character.
-        </code>
+        </code>        
         <br>
         <mat-form-field>
             <mat-label>Password</mat-label>

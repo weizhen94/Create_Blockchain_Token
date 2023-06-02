@@ -24,3 +24,10 @@ mat-form-field {
   button:hover {
     background-color: #28384c; 
 }
+
+.password-info {
+    font-size: 15px; /* changes the font size */
+    font-family: Roboto, "Helvetica Neue", sans-serif; /* changes the font family */
+    color: #435a76; /* changes the text color */
+  }
+  
