@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TokenService } from '../services/token.service';
 
 @Component({
@@ -9,14 +9,22 @@ import { TokenService } from '../services/token.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
-
+  
   constructor(private formBuilder: FormBuilder, private tokenService: TokenService) { }
-
+  
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, this.PasswordValidator]],
     });
+  }
+  
+  PasswordValidator(control: AbstractControl) {
+    const password = control.value as string;
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])/.test(password)) {
+      return { InvalidPassword: true };
+    }
+    return null;
   }
 
   onSubmit() {
