@@ -16,19 +16,25 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, this.PasswordValidator]],
+      confirmPassword: ['', Validators.required],
     });
-  }
+  }  
   
   PasswordValidator(control: AbstractControl) {
     const password = control.value as string;
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])/.test(password)) {
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.*.{8,})/.test(password)) {
       return { InvalidPassword: true };
     }
-    return null;
+    return null;  
   }
 
   onSubmit() {
     if (this.registerForm.invalid) {
+      return;
+    }
+
+    if (this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
+      alert("Passwords don't match.");
       return;
     }
 
@@ -51,6 +57,5 @@ export class RegisterComponent implements OnInit {
         }
       }
     });
-    
   }
 }
