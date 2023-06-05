@@ -13,6 +13,23 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    public void sendOtpEmail(String email, String otp) {
+        try {
+            System.out.println("Sending OTP email...");
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("tokenforge257@gmail.com");
+            message.setTo(email);
+            message.setSubject("Your OTP");
+            message.setText("Your OTP is: " + otp);
+
+            mailSender.send(message);
+            System.out.println("OTP Email sent!");
+        } catch (MailException e) {
+            System.out.println("Error while sending email: " + e.getMessage());
+        }
+    }
     
     public void sendEmail(TokenCaching tokenCaching) {
     

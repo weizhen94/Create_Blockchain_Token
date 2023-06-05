@@ -31,14 +31,25 @@ public class TokenController {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @PostMapping("/send-otp")
+    public ResponseEntity<?> sendOtp(@RequestBody User user) {
+
+        userService.generateAndSaveOTP(user.getEmail());
+
+        return ResponseEntity.ok().body("{\"message\":\"OTP sent to email\"}");
+    }
+
     @PostMapping("/transaction")
     public TokenCaching saveTokenTransaction(@RequestBody TokenCaching tokenCaching) {
+
         emailService.sendEmail(tokenCaching);
+
         return tokenCachingService.cacheTokenCreation(tokenCaching);
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
+
     if (userService.findByEmail(user.getEmail()).isPresent()) {
         return ResponseEntity.badRequest().body("Email already in use");
     }
@@ -48,6 +59,7 @@ public class TokenController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
+
     Optional<User> foundUser = userService.findByEmail(user.getEmail());
 
     if (foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {

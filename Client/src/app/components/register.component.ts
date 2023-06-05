@@ -8,13 +8,16 @@ import { TokenService } from '../services/token.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
   registerForm!: FormGroup;
+  // otpVerified = false;
   
   constructor(private formBuilder: FormBuilder, private tokenService: TokenService) { }
   
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
+      otp: ['', Validators.required],
       password: ['', [Validators.required, this.PasswordValidator]],
       confirmPassword: ['', Validators.required],
     });
@@ -26,6 +29,42 @@ export class RegisterComponent implements OnInit {
       return { InvalidPassword: true };
     }
     return null;  
+  }
+
+  sendOTP() {
+    const email = this.registerForm.value.email;
+  
+    this.tokenService.sendOTP({email}).subscribe({
+      next: response => {
+        console.log(response);
+        alert('OTP sent to your email!');
+      },
+      error: error => {
+        console.log(error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
+  }
+  
+  verifyOTP() {
+    const email = this.registerForm.value.email;
+    const otp = this.registerForm.value.otp;
+  
+    this.tokenService.verifyOTP({email, otp}).subscribe({
+      next: response => {
+        console.log(response);
+        if (response.verified) {
+          // this.otpVerified = true;
+          alert('OTP verified!');
+        } else {
+          alert('OTP verification failed. Please check your OTP.');
+        }
+      },
+      error: error => {
+        console.log(error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
   }
 
   onSubmit() {
@@ -58,4 +97,6 @@ export class RegisterComponent implements OnInit {
       }
     });
   }
+
+
 }

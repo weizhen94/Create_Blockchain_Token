@@ -25,4 +25,12 @@ export class TokenService {
   return this.http.post(`${this.baseUrl}/login`, user);
   }
 
+  sendOTP(user: {email: string}): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/send-otp`, user);
+  }
+
+  verifyOTP(otp: {email: string, otp: string}): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/verify-otp`, otp);
+  }
+
 }
