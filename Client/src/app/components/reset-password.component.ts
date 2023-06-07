@@ -91,8 +91,14 @@ export class ResetPasswordComponent implements OnInit{
         console.log(error);
         if (error.status === 400 && error.error === 'Email does not exists!') {
           alert('Email does not exists. Please use a different email.');
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/reset-password']);
+          });
         } else {
           alert('An error occurred. Please try again later.');
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/reset-password']);
+          });
         }
       }
     });

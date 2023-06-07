@@ -91,8 +91,14 @@ export class RegisterComponent implements OnInit {
         console.log(error);
         if (error.status === 400 && error.error === 'Email already in use') {
           alert('Email already in use. Please use a different email.');
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/register']);
+          });
         } else {
           alert('An error occurred. Please try again later.');
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/register']);
+          });
         }
       }
     });
