@@ -12,25 +12,25 @@ export class TokenService {
 
   constructor(private http: HttpClient) {}
 
-  addTokenCaching(tokenCaching: TokenCaching): Observable<TokenCaching> {
-    return this.http.post<TokenCaching>(`${this.baseUrl}/transaction`, tokenCaching);
+  sendOTP(user: {email: string}): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/send-otp`, user);
   }
-
+  
+  verifyOTP(otp: {email: string, otp: string}): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/verify-otp`, otp);
+  }
+  
+  loginUser(user: {email: string, password: string}): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, user);
+  }
+  
   registerUser(user: {email: string, password: string}): Observable<any> {
     console.log('from service: ', user.email, user.password);
     return this.http.post<any>(`${this.baseUrl}/register`, user);
   }
-
-  loginUser(user: {email: string, password: string}): Observable<any> {
-  return this.http.post(`${this.baseUrl}/login`, user);
-  }
-
-  sendOTP(user: {email: string}): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/send-otp`, user);
-  }
-
-  verifyOTP(otp: {email: string, otp: string}): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/verify-otp`, otp);
+  
+  addTokenCaching(tokenCaching: TokenCaching): Observable<TokenCaching> {
+    return this.http.post<TokenCaching>(`${this.baseUrl}/transaction`, tokenCaching);
   }
 
 }

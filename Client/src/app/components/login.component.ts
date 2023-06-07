@@ -10,17 +10,51 @@ import { TokenService } from '../services/token.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  otpVerified = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router, 
-    private tokenService: TokenService
-  ) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private tokenService: TokenService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
+      otp: ['', Validators.required],
       password: ['', Validators.required],
+    });
+  }
+
+  sendOTP() {
+    const email = this.loginForm.value.email;
+
+    this.tokenService.sendOTP({email}).subscribe({
+      next: response => {
+        console.log(response);
+        alert('OTP sent to your email!');
+      },
+      error: error => {
+        console.log(error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
+  }
+
+  verifyOTP() {
+    const email = this.loginForm.value.email;
+    const otp = this.loginForm.value.otp;
+
+    this.tokenService.verifyOTP({email, otp}).subscribe({
+      next: response => {
+        console.log(response);
+        if (response.verified) {
+          this.otpVerified = true;
+          alert('OTP verified!');
+        } else {
+          alert('OTP verification failed. Please check your OTP.');
+        }
+      },
+      error: error => {
+        console.log(error);
+        alert('An error occurred. Please try again later.');
+      }
     });
   }
 
