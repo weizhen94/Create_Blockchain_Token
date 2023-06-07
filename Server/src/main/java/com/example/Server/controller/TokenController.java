@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Server.model.OtpModel;
 import com.example.Server.model.TokenCaching;
 import com.example.Server.model.User;
 import com.example.Server.service.EmailService;
@@ -38,6 +39,16 @@ public class TokenController {
 
         return ResponseEntity.ok().body("{\"message\":\"OTP sent to email\"}");
     }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<?> verifyOtp(@RequestBody OtpModel otpmodel) {
+        boolean isVerified = userService.verifyOTP(otpmodel.getEmail(), otpmodel.getOtp());
+        if (isVerified) {
+            return ResponseEntity.ok().body("{\"message\":\"OTP verified\", \"verified\": true}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"message\":\"Invalid or expired OTP\", \"verified\": false}");
+        }
+    }    
 
     @PostMapping("/transaction")
     public TokenCaching saveTokenTransaction(@RequestBody TokenCaching tokenCaching) {

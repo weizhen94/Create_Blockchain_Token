@@ -2,6 +2,7 @@ package com.example.Server.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.Server.model.RepoOtp;
 import com.example.Server.model.User;
 import com.example.Server.repository.UserRepo;
 
@@ -27,13 +28,24 @@ public class UserService {
     public void generateAndSaveOTP(String email) {
 
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
-        LocalDateTime otpExpiry = LocalDateTime.now(ZoneOffset.UTC).plusMinutes(10);
+        LocalDateTime otpExpiry = LocalDateTime.now(ZoneOffset.UTC).plusMinutes(5);
 
         userRepo.deleteExpiredOtp();
         userRepo.upsertUserOTP(email, otp, otpExpiry);
 
         emailService.sendOtpEmail(email, otp);
     }
+
+    public boolean verifyOTP(String email, String otp) {
+        RepoOtp repoOtp = userRepo.getOtpByEmail(email);
+    
+        if (repoOtp == null) {
+            return false;
+        }
+    
+        System.out.println("Time now is: " + LocalDateTime.now(ZoneOffset.UTC));
+        return otp.equals(repoOtp.getOtp()) && LocalDateTime.now(ZoneOffset.UTC).isBefore(repoOtp.getOtpExpiry());
+    }    
 
     public User register(User user) {
 

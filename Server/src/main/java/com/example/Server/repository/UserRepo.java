@@ -1,5 +1,6 @@
 package com.example.Server.repository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -8,8 +9,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import com.example.Server.model.RepoOtp;
 import com.example.Server.model.User;
 
 @Repository
@@ -28,6 +31,30 @@ public class UserRepo {
         jdbcTemplate.update(deleteExpiredOtpSQL, LocalDateTime.now(ZoneOffset.UTC));
     }    
 
+    public RepoOtp getOtpByEmail(String email) {
+        final String findOtpSQL = "select * from registerOTP where email = ?";
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(findOtpSQL, email);
+        
+        if (rs.next()) {
+            RepoOtp repoOtp = new RepoOtp(); 
+            repoOtp.setEmail(rs.getString("email")); 
+            repoOtp.setOtp(rs.getString("otp"));
+            Timestamp timestamp = rs.getTimestamp("otp_expiry");
+            
+            System.out.println("Timestamp from DB: " + timestamp);
+            
+            if (timestamp != null) {
+                repoOtp.setOtpExpiry(timestamp.toLocalDateTime());
+                System.out.println("Converted LocalDateTime: " + timestamp.toLocalDateTime());
+            } else {
+                System.out.println("No expiry timestamp found for email: " + email);
+            }
+            return repoOtp;
+        } else {
+            return null;
+        }
+    }    
+    
     public User insertUser(User user){
         final String insertSQL = "insert into user (email, password) values (?, ?)";
         jdbcTemplate.update(insertSQL, user.getEmail(), user.getPassword());
