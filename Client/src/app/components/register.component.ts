@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TokenService } from '../services/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,9 +11,9 @@ import { TokenService } from '../services/token.service';
 export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
-  // otpVerified = false;
+  otpVerified = false;
   
-  constructor(private formBuilder: FormBuilder, private tokenService: TokenService) { }
+  constructor(private formBuilder: FormBuilder, private tokenService: TokenService, private router: Router) { }
   
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -54,7 +55,7 @@ export class RegisterComponent implements OnInit {
       next: response => {
         console.log(response);
         if (response.verified) {
-          // this.otpVerified = true;
+          this.otpVerified = true;
           alert('OTP verified!');
         } else {
           alert('OTP verification failed. Please check your OTP.');
@@ -86,6 +87,7 @@ export class RegisterComponent implements OnInit {
       next: response => {
         console.log(response);
         alert('Registration successful!');
+        this.router.navigate(['/']);
       },
       error: error => {
         console.log(error);

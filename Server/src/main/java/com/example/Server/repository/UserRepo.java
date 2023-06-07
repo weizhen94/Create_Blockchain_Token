@@ -41,11 +41,8 @@ public class UserRepo {
             repoOtp.setOtp(rs.getString("otp"));
             Timestamp timestamp = rs.getTimestamp("otp_expiry");
             
-            System.out.println("Timestamp from DB: " + timestamp);
-            
             if (timestamp != null) {
                 repoOtp.setOtpExpiry(timestamp.toLocalDateTime());
-                System.out.println("Converted LocalDateTime: " + timestamp.toLocalDateTime());
             } else {
                 System.out.println("No expiry timestamp found for email: " + email);
             }

@@ -18,10 +18,8 @@
             <button mat-raised-button color="primary" (click)="verifyOTP()">Verify OTP</button>
         </mat-form-field>
 
-     <p>
-        <code class="password-info" *ngIf="!(registerForm?.get('password')?.touched && registerForm?.get('password')?.invalid)">
-            Password must contain: 8 characters, upper & lowercase letter, number and special character.
-        </code>        
+    <div *ngIf="otpVerified">
+    <p>       
         <br>
         <mat-form-field>
             <mat-label>Password</mat-label>
@@ -39,8 +37,9 @@
             <input type="password" matInput formControlName="confirmPassword" required>
         </mat-form-field>   
     </p>  
-
     <button type="submit" mat-raised-button color="primary">Register</button>
+    </div>
+
     </form>
     </mat-card-content>
   </mat-card>

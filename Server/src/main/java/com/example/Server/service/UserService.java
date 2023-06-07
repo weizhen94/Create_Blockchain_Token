@@ -43,7 +43,6 @@ public class UserService {
             return false;
         }
     
-        System.out.println("Time now is: " + LocalDateTime.now(ZoneOffset.UTC));
         return otp.equals(repoOtp.getOtp()) && LocalDateTime.now(ZoneOffset.UTC).isBefore(repoOtp.getOtpExpiry());
     }    
 

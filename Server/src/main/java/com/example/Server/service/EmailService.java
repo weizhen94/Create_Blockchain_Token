@@ -16,8 +16,6 @@ public class EmailService {
 
     public void sendOtpEmail(String email, String otp) {
         try {
-            System.out.println("Sending OTP email...");
-
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("tokenforge257@gmail.com");
             message.setTo(email);
@@ -25,7 +23,6 @@ public class EmailService {
             message.setText("Your OTP is: " + otp);
 
             mailSender.send(message);
-            System.out.println("OTP Email sent!");
         } catch (MailException e) {
             System.out.println("Error while sending email: " + e.getMessage());
         }
@@ -34,8 +31,6 @@ public class EmailService {
     public void sendEmail(TokenCaching tokenCaching) {
     
     try {
-        System.out.println("Sending email...");
-
         String subject = "Token Creation Success";
         String text = "Congratulations, your token has been successfully created. Here are the transaction details:\n\n" +
             "Transaction Hash: " + tokenCaching.getTransactionHash() + "\n" +
@@ -52,7 +47,6 @@ public class EmailService {
         message.setText(text);
 
         mailSender.send(message);
-        System.out.println("Email sent!");
         } catch (MailException e) {
         System.out.println("Error while sending email: " + e.getMessage());
         }
