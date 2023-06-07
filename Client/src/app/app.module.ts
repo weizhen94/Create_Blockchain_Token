@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RegisterComponent } from './components/register.component';
 import { LoginComponent } from './components/login.component';
 import { NavbarComponent } from './components/navbar.component';
+import { ResetPasswordComponent } from './components/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NavbarComponent } from './components/navbar.component';
     TokencreationComponent,
     RegisterComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -52,9 +52,9 @@ public class UserRepo {
         }
     }    
     
-    public User insertUser(User user){
-        final String insertSQL = "insert into user (email, password) values (?, ?)";
-        jdbcTemplate.update(insertSQL, user.getEmail(), user.getPassword());
+    public User upsertUser(User user){
+        final String insertSQL = "insert into user (email, password) values (?, ?)" + "on duplicate key update password = ?";
+        jdbcTemplate.update(insertSQL, user.getEmail(), user.getPassword(), user.getPassword());
         return user; 
     }
 

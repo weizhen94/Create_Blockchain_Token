@@ -4,19 +4,19 @@ import { TokenService } from '../services/token.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit{
 
-  registerForm!: FormGroup;
+  resetPasswordForm!: FormGroup;
   otpVerified = false;
   
   constructor(private formBuilder: FormBuilder, private tokenService: TokenService, private router: Router) { }
   
   ngOnInit() {
-    this.registerForm = this.formBuilder.group({
+    this.resetPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       otp: ['', Validators.required],
       password: ['', [Validators.required, this.PasswordValidator]],
@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
   }
 
   sendOTP() {
-    const email = this.registerForm.value.email;
+    const email = this.resetPasswordForm.value.email;
   
     this.tokenService.sendOTP({email}).subscribe({
       next: response => {
@@ -48,8 +48,8 @@ export class RegisterComponent implements OnInit {
   }
   
   verifyOTP() {
-    const email = this.registerForm.value.email;
-    const otp = this.registerForm.value.otp;
+    const email = this.resetPasswordForm.value.email;
+    const otp = this.resetPasswordForm.value.otp;
   
     this.tokenService.verifyOTP({email, otp}).subscribe({
       next: response => {
@@ -69,33 +69,34 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.registerForm.invalid) {
+    if (this.resetPasswordForm.invalid) {
       return;
     }
 
-    if (this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
+    if (this.resetPasswordForm.value.password !== this.resetPasswordForm.value.confirmPassword) {
       alert("Passwords don't match.");
       return;
     }
 
-    const email = this.registerForm.value.email;
-    const password = this.registerForm.value.password;
+    const email = this.resetPasswordForm.value.email;
+    const password = this.resetPasswordForm.value.password;
 
-    this.tokenService.registerUser({email, password}).subscribe({
+    this.tokenService.resetPassword({email, password}).subscribe({
       next: response => {
         console.log(response);
-        alert('Registration successful!');
+        alert('Password reset successful!');
         this.router.navigate(['/']);
       },
       error: error => {
         console.log(error);
-        if (error.status === 400 && error.error === 'Email already in use') {
-          alert('Email already in use. Please use a different email.');
+        if (error.status === 400 && error.error === 'Email does not exists!') {
+          alert('Email does not exists. Please use a different email.');
         } else {
           alert('An error occurred. Please try again later.');
         }
       }
     });
   }
+
 
 }

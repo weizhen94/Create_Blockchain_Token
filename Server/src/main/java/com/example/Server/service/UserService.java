@@ -51,7 +51,7 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         
-        return userRepo.insertUser(user);
+        return userRepo.upsertUser(user);
     }
 
     public Optional<User> findByEmail(String email) {

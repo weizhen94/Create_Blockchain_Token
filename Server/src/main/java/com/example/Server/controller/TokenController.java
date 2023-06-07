@@ -49,16 +49,6 @@ public class TokenController {
             return ResponseEntity.badRequest().body("{\"message\":\"Invalid or expired OTP\", \"verified\": false}");
         }
     }    
-
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
-        
-        if (userService.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Email already in use");
-        }
-        
-        return ResponseEntity.ok(userService.register(user));
-    }
     
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
@@ -70,6 +60,26 @@ public class TokenController {
         } else {
             return ResponseEntity.badRequest().body("{\"message\":\"Invalid email or password\"}");
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        
+        if (userService.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Email already in use");
+        }
+        
+        return ResponseEntity.ok(userService.register(user));
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<?> resetPassword(@RequestBody User user) {
+        
+        if (userService.findByEmail(user.getEmail()).isEmpty()) {
+            return ResponseEntity.badRequest().body("Email does not exists!");
+        }
+        
+        return ResponseEntity.ok(userService.register(user));
     }
 
     @PostMapping("/checkUserExists")
