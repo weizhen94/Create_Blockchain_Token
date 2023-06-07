@@ -82,6 +82,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  forgotPassword() {
+    const email = this.loginForm.value.email;
+    this.tokenService.checkUserExists({email}).subscribe({
+      next: response => {
+        if (response.exists) {
+          this.router.navigate(['/reset-password'], { state: { email } });
+        } else {
+          alert('No account with this email exists. Please register first.');
+        }
+      },
+      error: error => {
+        console.log(error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
+  }  
+
   navigateToRegister() {
     this.router.navigate(['/register']);
   }

@@ -28,6 +28,10 @@ export class TokenService {
     console.log('from service: ', user.email, user.password);
     return this.http.post<any>(`${this.baseUrl}/register`, user);
   }
+
+  checkUserExists(user: {email: string}): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/checkUserExists`, user);
+  }
   
   addTokenCaching(tokenCaching: TokenCaching): Observable<TokenCaching> {
     return this.http.post<TokenCaching>(`${this.baseUrl}/transaction`, tokenCaching);

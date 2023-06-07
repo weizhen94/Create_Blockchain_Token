@@ -50,34 +50,46 @@ public class TokenController {
         }
     }    
 
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        
+        if (userService.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Email already in use");
+        }
+        
+        return ResponseEntity.ok(userService.register(user));
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        
+        Optional<User> foundUser = userService.findByEmail(user.getEmail());
+        
+        if (foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
+            return ResponseEntity.ok().body("{\"message\":\"Login successful\"}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"message\":\"Invalid email or password\"}");
+        }
+    }
+
+    @PostMapping("/checkUserExists")
+    public ResponseEntity<?> checkUserExists(@RequestBody User user) {
+
+        Optional<User> foundUser = userService.findByEmail(user.getEmail());
+
+        if (foundUser.isPresent()) {
+            return ResponseEntity.ok().body("{\"message\":\"Email exists!\", \"exists\": true}");
+        } else {
+            return ResponseEntity.ok().body("{\"message\":\"Email does not exists!\", \"exists\": false}");
+        }
+    }    
+
     @PostMapping("/transaction")
     public TokenCaching saveTokenTransaction(@RequestBody TokenCaching tokenCaching) {
 
         emailService.sendEmail(tokenCaching);
 
         return tokenCachingService.cacheTokenCreation(tokenCaching);
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
-
-    if (userService.findByEmail(user.getEmail()).isPresent()) {
-        return ResponseEntity.badRequest().body("Email already in use");
-    }
-
-    return ResponseEntity.ok(userService.register(user));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-
-    Optional<User> foundUser = userService.findByEmail(user.getEmail());
-
-    if (foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
-        return ResponseEntity.ok().body("{\"message\":\"Login successful\"}");
-        } else {
-        return ResponseEntity.badRequest().body("{\"message\":\"Invalid email or password\"}");
-        }
     }
 
 }

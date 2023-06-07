@@ -24,4 +24,9 @@ mat-form-field {
   button:hover {
     background-color: #28384c; 
 }
+
+.login-button {
+    margin-right: 20px;
+}
+
   
