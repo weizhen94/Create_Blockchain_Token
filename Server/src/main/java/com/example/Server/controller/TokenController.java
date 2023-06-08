@@ -46,7 +46,7 @@ public class TokenController {
         if (isVerified) {
             return ResponseEntity.ok().body("{\"message\":\"OTP verified\", \"verified\": true}");
         } else {
-            return ResponseEntity.badRequest().body("{\"message\":\"Invalid or expired OTP\", \"verified\": false}");
+            return ResponseEntity.ok().body("{\"message\":\"Invalid or expired OTP\", \"verified\": false}");
         }
     }    
     

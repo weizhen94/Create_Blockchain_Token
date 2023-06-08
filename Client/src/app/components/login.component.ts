@@ -45,8 +45,15 @@ export class LoginComponent implements OnInit {
       next: response => {
         console.log(response);
         if (response.verified) {
+
           this.otpVerified = true;
           alert('OTP verified!');
+
+          const emailControl = this.loginForm.get('email');
+          if (emailControl) {
+          emailControl.disable();
+          }
+          
         } else {
           alert('OTP verification failed. Please check your OTP.');
         }
@@ -63,6 +70,11 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    const emailControl = this.loginForm.get('email');
+    if (emailControl) {
+    emailControl.enable();
+    }
+
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
@@ -75,11 +87,13 @@ export class LoginComponent implements OnInit {
         console.log(error);
         if (error.status === 400) {
           alert('Invalid email or password. Please try again.');
+
           this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/']);
           });
           } else {
           alert('An error occurred. Please try again later.');
+
           this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/']);
           });
@@ -89,13 +103,21 @@ export class LoginComponent implements OnInit {
   }
 
   forgotPassword() {
+
+    const emailControl = this.loginForm.get('email');
+    if (emailControl) {
+    emailControl.enable();
+    }
+
     const email = this.loginForm.value.email;
+
     this.tokenService.checkUserExists({email}).subscribe({
       next: response => {
         if (response.exists) {
           this.router.navigate(['/reset-password'], { state: { email } });
         } else {
           alert('No account with this email exists. Please register first.');
+
           this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/']);
           });
@@ -104,6 +126,7 @@ export class LoginComponent implements OnInit {
       error: error => {
         console.log(error);
         alert('An error occurred. Please try again later.');
+
         this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
           this.router.navigate(['/']);
         });

@@ -55,8 +55,15 @@ export class RegisterComponent implements OnInit {
       next: response => {
         console.log(response);
         if (response.verified) {
+
           this.otpVerified = true;
           alert('OTP verified!');
+
+          const emailControl = this.registerForm.get('email');
+          if (emailControl) {
+          emailControl.disable();
+          }
+          
         } else {
           alert('OTP verification failed. Please check your OTP.');
         }
@@ -78,6 +85,11 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
+    const emailControl = this.registerForm.get('email');
+    if (emailControl) {
+    emailControl.enable();
+    }
+
     const email = this.registerForm.value.email;
     const password = this.registerForm.value.password;
 
@@ -91,11 +103,13 @@ export class RegisterComponent implements OnInit {
         console.log(error);
         if (error.status === 400 && error.error === 'Email already in use') {
           alert('Email already in use. Please use a different email.');
+
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/register']);
           });
         } else {
           alert('An error occurred. Please try again later.');
+
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/register']);
           });

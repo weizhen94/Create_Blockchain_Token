@@ -55,8 +55,15 @@ export class ResetPasswordComponent implements OnInit{
       next: response => {
         console.log(response);
         if (response.verified) {
+          
           this.otpVerified = true;
           alert('OTP verified!');
+
+          const emailControl = this.resetPasswordForm.get('email');
+          if (emailControl) {
+          emailControl.disable();
+          }
+
         } else {
           alert('OTP verification failed. Please check your OTP.');
         }
@@ -78,6 +85,11 @@ export class ResetPasswordComponent implements OnInit{
       return;
     }
 
+    const emailControl = this.resetPasswordForm.get('email');
+    if (emailControl) {
+    emailControl.enable();
+    }
+
     const email = this.resetPasswordForm.value.email;
     const password = this.resetPasswordForm.value.password;
 
@@ -91,11 +103,13 @@ export class ResetPasswordComponent implements OnInit{
         console.log(error);
         if (error.status === 400 && error.error === 'Email does not exists!') {
           alert('Email does not exists. Please use a different email.');
+
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/reset-password']);
           });
         } else {
           alert('An error occurred. Please try again later.');
+
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/reset-password']);
           });
@@ -103,6 +117,5 @@ export class ResetPasswordComponent implements OnInit{
       }
     });
   }
-
 
 }
