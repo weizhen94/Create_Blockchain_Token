@@ -4,18 +4,27 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Server.jwt.JwtUtil;
+import com.example.Server.model.AuthenticationRequest;
+import com.example.Server.model.AuthenticationResponse;
 import com.example.Server.model.OtpModel;
 import com.example.Server.model.TokenCaching;
 import com.example.Server.model.User;
 import com.example.Server.service.EmailService;
+import com.example.Server.service.JwtUserDetailsService;
 import com.example.Server.service.TokenCachingService;
 import com.example.Server.service.UserService;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @RestController
 @RequestMapping("/api")
@@ -29,6 +38,15 @@ public class TokenController {
 
     @Autowired
     private UserService userService; 
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -100,6 +118,32 @@ public class TokenController {
         emailService.sendEmail(tokenCaching);
 
         return tokenCachingService.cacheTokenCreation(tokenCaching);
+    }
+
+    /*
+
+    To test in AdvancedRestClient:
+    http://localhost:8080/api/authenticate
+
+    {
+    "username": "weizhen94@gmail.com",
+    "password": "Password11!"
+    }
+
+    */
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username or password", e);
+        }
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authenticationRequest.getUsername());
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
 }
