@@ -81,22 +81,27 @@ export class LoginComponent implements OnInit {
     this.tokenService.loginUser({email, password}).subscribe({
       next: response => {
         console.log(response);
+        localStorage.setItem('token', response.jwt);
         this.router.navigate(['/create']);
       },
       error: error => {
         console.log(error);
         if (error.status === 400) {
+
           alert('Invalid email or password. Please try again.');
 
           this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/']);
           });
+
           } else {
+
           alert('An error occurred. Please try again later.');
 
           this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/']);
           });
+
           }
           }
     });
@@ -114,22 +119,28 @@ export class LoginComponent implements OnInit {
     this.tokenService.checkUserExists({email}).subscribe({
       next: response => {
         if (response.exists) {
+
           this.router.navigate(['/reset-password'], { state: { email } });
+
         } else {
+
           alert('No account with this email exists. Please register first.');
 
           this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/']);
           });
+
         }
       },
       error: error => {
+
         console.log(error);
         alert('An error occurred. Please try again later.');
 
         this.router.navigateByUrl('/register', { skipLocationChange: true }).then(() => {
           this.router.navigate(['/']);
         });
+
       }
     });
   }  

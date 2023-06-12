@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenCaching } from '../models/token-caching';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,18 @@ export class TokenService {
 
   constructor(private http: HttpClient) {}
 
+  getAuthHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    const token = localStorage.getItem('token');
+    console.log("jwt from token.service.ts:", token); 
+    if (token) {
+        headers = headers.set('Authorization', 'Bearer ' + token);
+    }
+    return headers;
+  }
+
   sendOTP(user: {email: string}): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/send-otp`, user);
+    return this.http.post<any>(`${this.baseUrl}/send-otp`, user); 
   }
   
   verifyOTP(otp: {email: string, otp: string}): Observable<any> {
@@ -38,7 +49,8 @@ export class TokenService {
   }
   
   addTokenCaching(tokenCaching: TokenCaching): Observable<TokenCaching> {
-    return this.http.post<TokenCaching>(`${this.baseUrl}/transaction`, tokenCaching);
+    const headers = this.getAuthHeaders();
+    return this.http.post<TokenCaching>(`${this.baseUrl}/transaction`, tokenCaching, { headers });
   }
 
 }

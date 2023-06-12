@@ -77,7 +77,6 @@ public class TokenController {
     }
 
     */
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
 
@@ -93,18 +92,6 @@ public class TokenController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } else {
         return ResponseEntity.badRequest().body("{\"message\":\"Invalid email or password\"}");
-        }
-    }
-
-    @PostMapping("/logi")
-    public ResponseEntity<?> logi(@RequestBody User user) {
-        
-        Optional<User> foundUser = userService.findByEmail(user.getEmail());
-        
-        if (foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
-            return ResponseEntity.ok().body("{\"message\":\"Login successful\"}");
-        } else {
-            return ResponseEntity.badRequest().body("{\"message\":\"Invalid email or password\"}");
         }
     }
 
