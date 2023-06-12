@@ -1,8 +1,6 @@
 package com.example.Server.model;
 
-import java.io.Serializable;
-
-public class AuthenticationResponse implements Serializable {
+public class AuthenticationResponse {
 
     private final String jwt;
 

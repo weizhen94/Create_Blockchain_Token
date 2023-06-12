@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Server.jwt.JwtUtil;
-import com.example.Server.model.AuthenticationRequest;
 import com.example.Server.model.AuthenticationResponse;
 import com.example.Server.model.OtpModel;
 import com.example.Server.model.TokenCaching;
@@ -23,7 +22,6 @@ import com.example.Server.service.TokenCachingService;
 import com.example.Server.service.UserService;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @RestController
@@ -67,9 +65,39 @@ public class TokenController {
             return ResponseEntity.ok().body("{\"message\":\"Invalid or expired OTP\", \"verified\": false}");
         }
     }    
-    
+
+    /*
+
+    To test in AdvancedRestClient:
+    http://localhost:8080/api/login
+
+    {
+    "email": "weizhen94@gmail.com",
+    "password": "Password11!"
+    }
+
+    */
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
+
+    Optional<User> foundUser = userService.findByEmail(user.getEmail());
+
+    if (foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
+        
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
+        
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        } else {
+        return ResponseEntity.badRequest().body("{\"message\":\"Invalid email or password\"}");
+        }
+    }
+
+    @PostMapping("/logi")
+    public ResponseEntity<?> logi(@RequestBody User user) {
         
         Optional<User> foundUser = userService.findByEmail(user.getEmail());
         
@@ -118,34 +146,6 @@ public class TokenController {
         emailService.sendEmail(tokenCaching);
 
         return tokenCachingService.cacheTokenCreation(tokenCaching);
-    }
-
-    /*
-
-    To test in AdvancedRestClient:
-    http://localhost:8080/api/authenticate
-
-    {
-    "username": "weizhen94@gmail.com",
-    "password": "Password11!"
-    }
-
-    */
-    @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect email or password", e);
-        }
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
-        
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
 }
