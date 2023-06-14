@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Web3 from 'web3';
 
-import MyContractABI from './MyContractABI.json';
-import MyContractBytecode from './MyContractBytecode.json';
+import TokenContractABI from './TokenContractABI.json';
+import TokenContractBytecode from './TokenContractBytecode.json';
 import { TokenService } from '../services/token.service';
 import { TokenCaching } from '../models/token-caching';
 
@@ -69,8 +69,8 @@ export class TokencreationComponent implements OnInit {
     const account = accounts[0];
 
     // ABI and bytecode of contract
-    const abi = MyContractABI;
-    const bytecode = MyContractBytecode.object;
+    const abi = TokenContractABI;
+    const bytecode = TokenContractBytecode.object;
 
     // Parameters
     const tokenName = this.createTokenForm.value.tokenName;

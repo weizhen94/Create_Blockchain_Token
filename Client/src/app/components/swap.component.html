@@ -1,0 +1,38 @@
+<div class="container mat-typography">
+    <form [formGroup]="swapForm" (ngSubmit)="submit()">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Network</mat-label>
+            <select matNativeControl formControlName="network">
+                <option value="ethereum">Ethereum</option>
+                <option value="bsc">Binance Smart Chain</option>
+                <option value="polygon">Polygon</option>
+                <option value="sepolia">Sepolia</option>
+            </select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Token In</mat-label>
+            <input matInput type="text" id="tokenIn" formControlName="tokenIn">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Token Out</mat-label>
+            <input matInput type="text" id="tokenOut" formControlName="tokenOut">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Amount In</mat-label>
+            <input matInput type="number" id="amountIn" formControlName="amountIn">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Max Slippage</mat-label>
+            <input matInput type="number" id="slippage" formControlName="slippage">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Swap Tokens</button>
+    </form>
+</div>
+
+           
