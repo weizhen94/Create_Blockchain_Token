@@ -57,31 +57,39 @@ export class AddliquidityComponent implements OnInit {
     const account = accounts[0];
   
     const abi = AMMContractABI;
-    const contractAddress = '0xbd8e3D4FF049A0232D6C911928EA8544A797d0bd';
+    const contractAddress = '0xe50686846a12C270d4212B36c25B857551F589A3';
   
     const tokenA = this.addLiquidityForm.value.tokenA;
     const tokenB = this.addLiquidityForm.value.tokenB;
-    const amountA = this.addLiquidityForm.value.amountA;
-    const amountB = this.addLiquidityForm.value.amountB;
+
+    let amountAInWei = this.addLiquidityForm.value.amountA.toString();
+    amountAInWei = this.web3.utils.toWei(amountAInWei, 'ether');
+    console.log("Amount A In wei:", amountAInWei);
+
+    let amountBInWei = this.addLiquidityForm.value.amountB.toString();
+    amountBInWei = this.web3.utils.toWei(amountBInWei, 'ether');
+    console.log("Amount A In wei:", amountBInWei);
   
     // Interact with the tokens
     const tokenAContract = new this.web3.eth.Contract(TokenContractABI, tokenA);
     const tokenBContract = new this.web3.eth.Contract(TokenContractABI, tokenB);
-  
+    
     // Approve the contract to spend the tokens
-    await tokenAContract.methods.approve(contractAddress, amountA).send({ from: account });
-    await tokenBContract.methods.approve(contractAddress, amountB).send({ from: account });
-  
+    await tokenAContract.methods.approve(contractAddress, amountAInWei).send({ from: account });
+    console.log("Approved amount A!");
+    await tokenBContract.methods.approve(contractAddress, amountBInWei).send({ from: account });
+    console.log("Approved amount B!");
+
     // Interact with the contract
+    console.log("Approving add liquidity...");
     const contract = new this.web3.eth.Contract(abi, contractAddress);
   
-    contract.methods.addLiquidity(tokenA, tokenB, amountA, amountB).send({
+    contract.methods.addLiquidity(tokenA, tokenB, amountAInWei, amountBInWei).send({
       from: account,
       gas: '4700000'
     }).on('receipt', (receipt: any) => {
       this.transactionHash = receipt.transactionHash; 
       console.log(receipt); 
-      console.log(this.transactionHash); 
     });
   }
   

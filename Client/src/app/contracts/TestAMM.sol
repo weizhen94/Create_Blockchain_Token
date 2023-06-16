@@ -4,10 +4,15 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract AMM {
-    // Set a fee rate of 1%
-    uint public constant FEE_RATE = 1;
+    // Set a fee rate of 5%
+    uint public constant FEE_RATE = 5;
 
     mapping(address => mapping(address => uint)) public pairs;
+    address public feeRecipient;
+
+    constructor(address _feeRecipient) {
+        feeRecipient = _feeRecipient;
+    }
 
     function addLiquidity(address tokenA, address tokenB, uint amountA, uint amountB) public {
         ERC20 token1 = ERC20(tokenA);
@@ -27,28 +32,32 @@ contract AMM {
         require(inputToken.transferFrom(msg.sender, address(this), amountIn), "Transfer of input token failed");
 
         // Apply fee
-        uint amountInAfterFee = (amountIn * (100 - FEE_RATE)) / 100;
+        uint feeAmount = (amountIn * FEE_RATE) / 100;
+        uint amountInAfterFee = amountIn - feeAmount;
 
-        uint amountOut = getOutputAmount(tokenIn, tokenOut, amountIn, slippageAmount);
+        uint amountOut = getOutputAmount(tokenIn, tokenOut, amountInAfterFee, slippageAmount);
 
         ERC20 outputToken = ERC20(tokenOut);
         require(outputToken.transfer(msg.sender, amountOut), "Transfer of output token failed");
+
+        // Transfer fee to the fee recipient
+        require(inputToken.transfer(feeRecipient, feeAmount), "Transfer of fee failed");
 
         pairs[tokenIn][tokenOut] += amountInAfterFee;
         pairs[tokenOut][tokenIn] -= amountOut;
     }
 
-    function getOutputAmount(address tokenIn, address tokenOut, uint amountIn,  uint slippageAmount) public view returns (uint) {
+    function getOutputAmount(address tokenIn, address tokenOut, uint amountIn, uint slippageAmount) public view returns (uint) {
         uint inputReserve = pairs[tokenIn][tokenOut];
         uint outputReserve = pairs[tokenOut][tokenIn];
 
-        // Apply fee & slippage
-        uint minAmountOut = (amountIn * (100 - (FEE_RATE + slippageAmount))) / 100; 
+        uint minAmountOut = (amountIn * (100 - (FEE_RATE + slippageAmount))) / 100;
 
         require(amountIn <= inputReserve, "Not enough liquidity");
 
-        uint amountOut = amountIn * (outputReserve / inputReserve); // formula for calculating output amount
+        uint amountOut = (amountIn * outputReserve) / inputReserve; // formula for calculating output amount
         require(amountOut >= minAmountOut, "Slippage exceeded");
+
         return amountOut;
     }
 }

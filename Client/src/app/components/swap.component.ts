@@ -42,7 +42,7 @@ export class SwapComponent implements OnInit {
       tokenIn: this.formBuilder.control<string>('', [Validators.required]),
       tokenOut: this.formBuilder.control<string>('', [Validators.required]),
       amountIn: this.formBuilder.control<string>('', [Validators.required]),
-      slippage: this.formBuilder.control<string>('', [Validators.required]),
+      slippage: this.formBuilder.control<number>(0, [Validators.required, Validators.pattern("^[0-9]*$")]),
     });
   }
 
@@ -61,29 +61,34 @@ export class SwapComponent implements OnInit {
     const account = accounts[0];
   
     const abi = AMMContractABI;
-    const contractAddress = '0xbd8e3D4FF049A0232D6C911928EA8544A797d0bd';
+    const contractAddress = '0xe50686846a12C270d4212B36c25B857551F589A3';
   
     const tokenIn = this.swapForm.value.tokenIn;
     const tokenOut = this.swapForm.value.tokenOut;
-    const amountIn = this.swapForm.value.amountIn;
+
+    let amountInInWei = this.swapForm.value.amountIn.toString();
+    amountInInWei = this.web3.utils.toWei(amountInInWei, 'ether');
+    console.log("Amount In (wei):", amountInInWei);
+
     const slippage = this.swapForm.value.slippage;
 
     // Interact with the tokens
     const tokenAContract = new this.web3.eth.Contract(TokenContractABI, tokenIn);
   
     // Approve the contract to spend the tokens
-    await tokenAContract.methods.approve(contractAddress, amountIn).send({ from: account });
+    await tokenAContract.methods.approve(contractAddress, amountInInWei).send({ from: account });
+    console.log("Approved amount In!");
   
     // Interact with the contract
+    console.log("Approving swap...");
     const contract = new this.web3.eth.Contract(abi, contractAddress);
   
-    contract.methods.swap(tokenIn, tokenOut, amountIn, slippage).send({
+    contract.methods.swap(tokenIn, tokenOut, amountInInWei, slippage).send({
       from: account,
       gas: '4700000'
     }).on('receipt', (receipt: any) => {
       this.transactionHash = receipt.transactionHash; 
       console.log(receipt); 
-      console.log(this.transactionHash); 
     });
   }
 

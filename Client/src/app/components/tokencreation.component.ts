@@ -75,28 +75,35 @@ export class TokencreationComponent implements OnInit {
     // Parameters
     const tokenName = this.createTokenForm.value.tokenName;
     const tokenSymbol = this.createTokenForm.value.tokenSymbol;
-    const totalSupply = this.createTokenForm.value.totalSupply;
+    // Converts the token supply to wei
+    let totalSupplyInWei = this.createTokenForm.value.totalSupply.toString();
+    totalSupplyInWei = this.web3.utils.toWei(totalSupplyInWei, 'ether');
+    console.log(totalSupplyInWei);
     const otherAddress = "0xd44beF7C1731bd88E1b15f4BD225E80E45E1F635";
 
     // Deploy the contract
     const contract = new this.web3.eth.Contract(abi);
     contract.deploy({
       data: bytecode,
-      arguments: [tokenName, tokenSymbol, totalSupply, otherAddress]
+      arguments: [tokenName, tokenSymbol, totalSupplyInWei, otherAddress]
     }).send({
       from: account,
       gas: '4700000'
     }).on('receipt', (receipt: any) => {
       this.contractAddress = receipt.contractAddress;
       this.transactionHash = receipt.transactionHash;
+
+    // Converts the token supply from wei to ether
+    const totalSupplyInEthers = this.web3.utils.fromWei(totalSupplyInWei, 'ether');
+    console.log(totalSupplyInEthers);
       
-      const tokenCaching: TokenCaching = {
+    const tokenCaching: TokenCaching = {
         transactionHash: this.transactionHash,
         contractAddress: this.contractAddress,
         network: network,
         tokenName: tokenName,
         tokenSymbol: tokenSymbol,
-        totalSupply: totalSupply,
+        totalSupply: totalSupplyInEthers,
         userAddress: account,
         otherAddress: otherAddress,
         timestamp: new Date().toISOString(),
