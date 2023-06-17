@@ -61,7 +61,7 @@ export class SwapComponent implements OnInit {
     const account = accounts[0];
   
     const abi = AMMContractABI;
-    const contractAddress = '0xe50686846a12C270d4212B36c25B857551F589A3';
+    const contractAddress = '0x58AC18A900aE952F3Ba0D0FCE6147389a119CA13';
   
     const tokenIn = this.swapForm.value.tokenIn;
     const tokenOut = this.swapForm.value.tokenOut;

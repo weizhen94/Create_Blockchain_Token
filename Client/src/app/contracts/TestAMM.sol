@@ -51,11 +51,11 @@ contract AMM {
         uint inputReserve = pairs[tokenIn][tokenOut];
         uint outputReserve = pairs[tokenOut][tokenIn];
 
-        uint minAmountOut = (amountIn * (100 - (FEE_RATE + slippageAmount))) / 100;
-
         require(amountIn <= inputReserve, "Not enough liquidity");
 
         uint amountOut = (amountIn * outputReserve) / inputReserve; // formula for calculating output amount
+        uint minAmountOut = (amountOut * (100 - (FEE_RATE + slippageAmount))) / 100;
+        
         require(amountOut >= minAmountOut, "Slippage exceeded");
 
         return amountOut;
