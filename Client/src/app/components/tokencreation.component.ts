@@ -37,7 +37,7 @@ export class TokencreationComponent implements OnInit {
         console.error("User denied account access");
       }
     } else if (window.web3) {
-      // Use Mist/MetaMask's provider
+      // Use MetaMask's provider
       this.web3 = new Web3(this.web3.currentProvider);
     } else {
       console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
@@ -46,7 +46,7 @@ export class TokencreationComponent implements OnInit {
     // Initialize form
     this.createTokenForm = this.formBuilder.group({
       userEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
-      network: this.formBuilder.control<string>('', [Validators.required]),
+      network: this.formBuilder.control<string>('Sepolia Testnet', [Validators.required]),
       tokenName: this.formBuilder.control<string>('', [Validators.required]),
       tokenSymbol: this.formBuilder.control<string>('', [Validators.required]),
       totalSupply: this.formBuilder.control<string>('', [Validators.required]),
@@ -57,6 +57,8 @@ export class TokencreationComponent implements OnInit {
     if (this.createTokenForm.invalid) {
       return;
     }
+
+    console.log("Creating token...");
 
     // Get the network
     const network = this.createTokenForm.value.network;
@@ -78,14 +80,12 @@ export class TokencreationComponent implements OnInit {
     // Converts the token supply to wei
     let totalSupplyInWei = this.createTokenForm.value.totalSupply.toString();
     totalSupplyInWei = this.web3.utils.toWei(totalSupplyInWei, 'ether');
-    console.log(totalSupplyInWei);
-    const otherAddress = "0xd44beF7C1731bd88E1b15f4BD225E80E45E1F635";
 
     // Deploy the contract
     const contract = new this.web3.eth.Contract(abi);
     contract.deploy({
       data: bytecode,
-      arguments: [tokenName, tokenSymbol, totalSupplyInWei, otherAddress]
+      arguments: [tokenName, tokenSymbol, totalSupplyInWei]
     }).send({
       from: account,
       gas: '4700000'
@@ -95,7 +95,6 @@ export class TokencreationComponent implements OnInit {
 
     // Converts the token supply from wei to ether
     const totalSupplyInEthers = this.web3.utils.fromWei(totalSupplyInWei, 'ether');
-    console.log(totalSupplyInEthers);
       
     const tokenCaching: TokenCaching = {
         transactionHash: this.transactionHash,
@@ -105,11 +104,11 @@ export class TokencreationComponent implements OnInit {
         tokenSymbol: tokenSymbol,
         totalSupply: totalSupplyInEthers,
         userAddress: account,
-        otherAddress: otherAddress,
         timestamp: new Date().toISOString(),
         userEmail: this.createTokenForm.value.userEmail,
       }
     
+      console.log("Caching token...");
       this.tokenService.addTokenCaching(tokenCaching).subscribe(response => {
         console.log(response);
       });
@@ -120,25 +119,7 @@ export class TokencreationComponent implements OnInit {
   async switchNetwork(network: string) {
     try {
       switch (network) {
-        case 'ethereum':
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x1' }], // This is the chain ID for Ethereum Mainnet
-          });
-          break;
-        case 'bsc':
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x38' }], // This is the chain ID for Binance Smart Chain
-          });
-          break;
-        case 'polygon':
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x89' }], // This is the chain ID for Polygon (Matic)
-          });
-          break;
-          case 'sepolia':
+          case 'Sepolia Testnet':
             await window.ethereum.request({
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: '0xAA36A7' }], // This is the chain ID for Sepolia

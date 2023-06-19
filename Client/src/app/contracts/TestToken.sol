@@ -20,18 +20,14 @@ contract Token {
     // Number of decimals the token uses
     uint8 private _decimals = 18;
 
-    constructor(string memory name_, string memory symbol_, uint256 totalSupply_, address otherAddress) {
+    constructor(string memory name_, string memory symbol_, uint256 totalSupply_) {
         _name = name_;
         _symbol = symbol_;
         _totalSupply = totalSupply_;
 
         require(totalSupply_ >= 10**18, "Total supply must be at least 1 token");
 
-        uint256 otherAmount = totalSupply_ / 10;
-        uint256 senderAmount = totalSupply_ - otherAmount;
-
-        _balances[msg.sender] = senderAmount;
-        _balances[otherAddress] = otherAmount;
+        _balances[msg.sender] = totalSupply_;
     }
 
     function name() public view returns (string memory) {

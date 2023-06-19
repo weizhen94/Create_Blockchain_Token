@@ -40,7 +40,6 @@ public class TokenCachingRepo {
         doc.put("tokenName", tokenCache.getTokenName()); 
         doc.put("tokenSymbol", tokenCache.getTokenSymbol()); 
         doc.put("totalSupply", tokenCache.getTotalSupply()); 
-        doc.put("otherAddress", tokenCache.getOtherAddress()); 
         doc.put("timestamp", tokenCache.getTimestamp()); 
         //the template.insert() method is called with the Document object and the collection name "comment". 
         //This method inserts the Document object into the "comment" collection in the MongoDB database.

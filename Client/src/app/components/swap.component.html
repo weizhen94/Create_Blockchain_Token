@@ -3,12 +3,9 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Network</mat-label>
-            <select matNativeControl formControlName="network">
-                <option value="ethereum">Ethereum</option>
-                <option value="bsc">Binance Smart Chain</option>
-                <option value="polygon">Polygon</option>
-                <option value="sepolia">Sepolia</option>
-            </select>
+            <mat-select id="network" formControlName="network">
+                <mat-option value="Sepolia Testnet">Sepolia Testnet</mat-option>
+            </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="fill">

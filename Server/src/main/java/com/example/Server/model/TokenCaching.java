@@ -10,7 +10,6 @@ public class TokenCaching {
     private String tokenSymbol;
     private String totalSupply;
     private String userAddress;
-    private String otherAddress;
     private String contractAddress;
     private Date timestamp;
     private String userEmail; 
@@ -50,12 +49,6 @@ public class TokenCaching {
     }
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
-    }
-    public String getOtherAddress() {
-        return otherAddress;
-    }
-    public void setOtherAddress(String otherAddress) {
-        this.otherAddress = otherAddress;
     }
     public String getTransactionHash() {
         return transactionHash;

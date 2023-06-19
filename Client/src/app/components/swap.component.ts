@@ -38,7 +38,7 @@ export class SwapComponent implements OnInit {
     }
 
     this.swapForm = this.formBuilder.group({
-      network: this.formBuilder.control<string>('', [Validators.required]),
+      network: this.formBuilder.control<string>('Sepolia Testnet', [Validators.required]),
       tokenIn: this.formBuilder.control<string>('', [Validators.required]),
       tokenOut: this.formBuilder.control<string>('', [Validators.required]),
       amountIn: this.formBuilder.control<string>('', [Validators.required]),
@@ -61,7 +61,7 @@ export class SwapComponent implements OnInit {
     const account = accounts[0];
   
     const abi = AMMContractABI;
-    const contractAddress = '0x58AC18A900aE952F3Ba0D0FCE6147389a119CA13';
+    const contractAddress = '0x60592aba12cD6af0Fa1f4c4733367BE501c24A7f';
   
     const tokenIn = this.swapForm.value.tokenIn;
     const tokenOut = this.swapForm.value.tokenOut;
@@ -96,25 +96,7 @@ export class SwapComponent implements OnInit {
   async switchNetwork(network: string) {
     try {
       switch (network) {
-        case 'ethereum':
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x1' }], // This is the chain ID for Ethereum Mainnet
-          });
-          break;
-        case 'bsc':
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x38' }], // This is the chain ID for Binance Smart Chain
-          });
-          break;
-        case 'polygon':
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x89' }], // This is the chain ID for Polygon (Matic)
-          });
-          break;
-          case 'sepolia':
+          case 'Sepolia Testnet':
             await window.ethereum.request({
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: '0xAA36A7' }], // This is the chain ID for Sepolia
@@ -128,4 +110,5 @@ export class SwapComponent implements OnInit {
         throw error;
       }
   }
+
 }
