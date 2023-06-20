@@ -1,21 +1,18 @@
 <div class="container mat-typography">
     <form [formGroup]="createTokenForm" (ngSubmit)="submit()">
-        
-        <!-- Add User email -->
-        <mat-form-field appearance="fill">
-            <mat-label>Your Email</mat-label>
-            <input matInput type="email" id="userEmail" formControlName="userEmail">
-        </mat-form-field>
-          
-        <!-- Network selection dropdown -->
+
         <mat-form-field appearance="fill">
             <mat-label>Network</mat-label>
             <mat-select id="network" formControlName="network">
                 <mat-option value="Sepolia Testnet">Sepolia Testnet</mat-option>
             </mat-select>
         </mat-form-field>
-
-        <!-- Rest of the form -->
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Your Login Email</mat-label>
+            <input matInput type="email" id="userEmail" formControlName="userEmail">
+        </mat-form-field>
+          
         <mat-form-field appearance="fill">
             <mat-label>Token Name</mat-label>
             <input matInput type="text" id="tokenName" formControlName="tokenName">

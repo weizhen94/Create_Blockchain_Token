@@ -1,6 +1,6 @@
 package com.example.Server.service;
 
-import com.example.Server.repository.UserRepo;
+import com.example.Server.repository.mySQLRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepo userRepo;
+    private mySQLRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

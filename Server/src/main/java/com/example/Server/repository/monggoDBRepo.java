@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.Server.model.TokenCaching;
+import com.example.Server.model.Token;
 
 @Repository
-public class TokenCachingRepo {
+public class monggoDBRepo {
 
     @Autowired
     private MongoTemplate template;
@@ -28,7 +28,7 @@ public class TokenCachingRepo {
 }
 */
     //This method takes a TokenCreation object as a parameter and saves it to the "creation" collection in the MongoDB database.
-    public void saveTokenCreation(TokenCaching tokenCache) {
+    public void saveTokenCreation(Token tokenCache) {
         //It first creates a new Document object, which represents a MongoDB document that will be inserted into the database.
         Document doc = new Document(); 
         //Then, it populates the Document object with the fields of the Comment object (i.e., text, timestamp, and characterId).

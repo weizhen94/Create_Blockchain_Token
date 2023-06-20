@@ -13,10 +13,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import com.example.Server.model.RepoOtp;
+import com.example.Server.model.Token;
 import com.example.Server.model.User;
 
 @Repository
-public class UserRepo {
+public class mySQLRepo {
 
     @Autowired
     JdbcTemplate jdbcTemplate; 
@@ -66,5 +67,10 @@ public class UserRepo {
         }else{
             return Optional.of(users.get(0));
         }
+    }
+
+    public void insertToken(Token token) {
+        final String insertTokenSQL = "insert into token (token_name, token_symbol, decimals, total_supply, contract_address, transaction_hash, user_address, user_email) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(insertTokenSQL, token.getTokenName(), token.getTokenSymbol(), token.getDecimals(), token.getTotalSupply(), token.getContractAddress(), token.getTransactionHash(), token.getUserAddress(), token.getUserEmail());
     }
 }

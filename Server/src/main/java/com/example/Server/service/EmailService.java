@@ -6,7 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.example.Server.model.TokenCaching;
+import com.example.Server.model.Token;
 
 @Service
 public class EmailService {
@@ -28,7 +28,7 @@ public class EmailService {
         }
     }
     
-    public void sendEmail(TokenCaching tokenCaching) {
+    public void sendEmail(Token tokenCaching) {
     
     try {
         String subject = "Token Creation Success";
@@ -38,6 +38,7 @@ public class EmailService {
             "Network: " + tokenCaching.getNetwork() + "\n" +
             "Token Name: " + tokenCaching.getTokenName() + "\n" +
             "Token Symbol: " + tokenCaching.getTokenSymbol() + "\n" +
+            "Token Decimal: 18 " + "\n" +
             "Total Supply: " + tokenCaching.getTotalSupply();
 
         SimpleMailMessage message = new SimpleMailMessage();

@@ -45,8 +45,8 @@ export class TokencreationComponent implements OnInit {
 
     // Initialize form
     this.createTokenForm = this.formBuilder.group({
-      userEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
       network: this.formBuilder.control<string>('Sepolia Testnet', [Validators.required]),
+      userEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
       tokenName: this.formBuilder.control<string>('', [Validators.required]),
       tokenSymbol: this.formBuilder.control<string>('', [Validators.required]),
       totalSupply: this.formBuilder.control<string>('', [Validators.required]),
@@ -101,15 +101,18 @@ export class TokencreationComponent implements OnInit {
       
     // Converts the token supply from wei to ether
     const totalSupplyInEthers = this.web3.utils.fromWei(totalSupplyInWei, 'ether');
-      
+    
+    const decimals = "18"; 
+    
     const tokenCaching: TokenCaching = {
         transactionHash: this.transactionHash,
-        contractAddress: this.contractAddress,
         network: network,
         tokenName: tokenName,
         tokenSymbol: tokenSymbol,
         totalSupply: totalSupplyInEthers,
+        decimals: decimals, 
         userAddress: account,
+        contractAddress: this.contractAddress,
         timestamp: new Date().toISOString(),
         userEmail: this.createTokenForm.value.userEmail,
       }

@@ -5,6 +5,7 @@ export interface TokenCaching {
     tokenName: String;
     tokenSymbol: String;
     totalSupply: String;
+    decimals: String;
     userAddress: String;
     contractAddress: String;
     timestamp: string;

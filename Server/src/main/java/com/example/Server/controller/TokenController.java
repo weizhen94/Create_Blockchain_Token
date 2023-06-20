@@ -1,13 +1,11 @@
 package com.example.Server.controller;
 
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +15,13 @@ import com.example.Server.jwt.JwtUtil;
 import com.example.Server.model.AuthenticationResponse;
 import com.example.Server.model.EtherscanRequest;
 import com.example.Server.model.OtpModel;
-import com.example.Server.model.TokenCaching;
+import com.example.Server.model.Token;
 import com.example.Server.model.User;
 import com.example.Server.service.EmailService;
 import com.example.Server.service.EtherscanService;
 import com.example.Server.service.JwtUserDetailsService;
-import com.example.Server.service.TokenCachingService;
-import com.example.Server.service.UserService;
+import com.example.Server.service.mongoDBService;
+import com.example.Server.service.mySQLService;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,13 +31,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class TokenController {
 
     @Autowired
-    private TokenCachingService tokenCachingService; 
+    private mongoDBService mongoDBService; 
 
     @Autowired
     private EmailService emailService; 
 
     @Autowired
-    private UserService userService; 
+    private mySQLService mySQLService; 
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -58,14 +56,14 @@ public class TokenController {
     @PostMapping("/send-otp")
     public ResponseEntity<?> sendOtp(@RequestBody User user) {
 
-        userService.generateAndSaveOTP(user.getEmail());
+        mySQLService.generateAndSaveOTP(user.getEmail());
 
         return ResponseEntity.ok().body("{\"message\":\"OTP sent to email\"}");
     }
 
     @PostMapping("/verify-otp")
     public ResponseEntity<?> verifyOtp(@RequestBody OtpModel otpmodel) {
-        boolean isVerified = userService.verifyOTP(otpmodel.getEmail(), otpmodel.getOtp());
+        boolean isVerified = mySQLService.verifyOTP(otpmodel.getEmail(), otpmodel.getOtp());
         if (isVerified) {
             return ResponseEntity.ok().body("{\"message\":\"OTP verified\", \"verified\": true}");
         } else {
@@ -87,7 +85,7 @@ public class TokenController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
 
-    Optional<User> foundUser = userService.findByEmail(user.getEmail());
+    Optional<User> foundUser = mySQLService.findByEmail(user.getEmail());
 
     if (foundUser.isPresent() && passwordEncoder.matches(user.getPassword(), foundUser.get().getPassword())) {
         
@@ -105,27 +103,27 @@ public class TokenController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         
-        if (userService.findByEmail(user.getEmail()).isPresent()) {
+        if (mySQLService.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already in use");
         }
         
-        return ResponseEntity.ok(userService.register(user));
+        return ResponseEntity.ok(mySQLService.register(user));
     }
 
     @PostMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody User user) {
         
-        if (userService.findByEmail(user.getEmail()).isEmpty()) {
+        if (mySQLService.findByEmail(user.getEmail()).isEmpty()) {
             return ResponseEntity.badRequest().body("Email does not exists!");
         }
         
-        return ResponseEntity.ok(userService.register(user));
+        return ResponseEntity.ok(mySQLService.register(user));
     }
 
     @PostMapping("/checkUserExists")
     public ResponseEntity<?> checkUserExists(@RequestBody User user) {
 
-        Optional<User> foundUser = userService.findByEmail(user.getEmail());
+        Optional<User> foundUser = mySQLService.findByEmail(user.getEmail());
 
         if (foundUser.isPresent()) {
             return ResponseEntity.ok().body("{\"message\":\"Email exists!\", \"exists\": true}");
@@ -135,11 +133,13 @@ public class TokenController {
     }    
 
     @PostMapping("/transaction")
-    public TokenCaching saveTokenTransaction(@RequestBody TokenCaching tokenCaching) {
+    public Token saveTokenTransaction(@RequestBody Token token) {
 
-        emailService.sendEmail(tokenCaching);
+        emailService.sendEmail(token);
 
-        return tokenCachingService.cacheTokenCreation(tokenCaching);
+        mySQLService.saveToken(token);
+
+        return mongoDBService.cacheTokenCreation(token);
     }
 
     @PostMapping("/getTransactionStatus")

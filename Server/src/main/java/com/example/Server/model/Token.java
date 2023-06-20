@@ -2,18 +2,25 @@ package com.example.Server.model;
 
 import java.util.Date;
 
-public class TokenCaching {
+public class Token {
 
     private String transactionHash;
     private String network;
     private String tokenName;
     private String tokenSymbol;
     private String totalSupply;
+    private String decimals; 
     private String userAddress;
     private String contractAddress;
     private Date timestamp;
     private String userEmail; 
-
+    
+    public String getDecimals() {
+        return decimals;
+    }
+    public void setDecimals(String decimals) {
+        this.decimals = decimals;
+    }
     public String getUserEmail() {
         return userEmail;
     }
