@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Web3 from 'web3';
 
@@ -7,6 +7,8 @@ import TokenContractABI from './TokenContractABI.json';
 import TokenContractBytecode from './TokenContractBytecode.json';
 import { TokenService } from '../services/token.service';
 import { TokenCaching } from '../models/token-caching';
+import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
 
 declare global {
   interface Window { ethereum: any; web3: any; }
@@ -17,14 +19,16 @@ declare global {
   templateUrl: './tokencreation.component.html',
   styleUrls: ['./tokencreation.component.css']
 })
-export class TokencreationComponent implements OnInit {
+export class TokencreationComponent implements OnInit, OnDestroy {
 
   web3: any;
   createTokenForm!: FormGroup;
   contractAddress!: string;
   transactionHash!: string;
+  userEmail!: string;
+  userEmailSubscription!: Subscription;
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private tokenService: TokenService) { }
+  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private tokenService: TokenService, private userService: UserService) { }
 
   ngOnInit() {
     // Initialize web3
@@ -43,14 +47,22 @@ export class TokencreationComponent implements OnInit {
       console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
 
-    // Initialize form
+    this.userEmailSubscription = this.userService.getUserEmail().subscribe(email => {
+      this.userEmail = email;
+    });
+
     this.createTokenForm = this.formBuilder.group({
       network: this.formBuilder.control<string>('Sepolia Testnet', [Validators.required]),
-      userEmail: this.formBuilder.control<string>('', [Validators.required, Validators.email]),
       tokenName: this.formBuilder.control<string>('', [Validators.required]),
       tokenSymbol: this.formBuilder.control<string>('', [Validators.required]),
       totalSupply: this.formBuilder.control<string>('', [Validators.required]),
     });
+  }
+
+  ngOnDestroy() {
+    if (this.userEmailSubscription) {
+      this.userEmailSubscription.unsubscribe();
+    }
   }
 
   async submit() {
@@ -114,7 +126,7 @@ export class TokencreationComponent implements OnInit {
         userAddress: account,
         contractAddress: this.contractAddress,
         timestamp: new Date().toISOString(),
-        userEmail: this.createTokenForm.value.userEmail,
+        userEmail: this.userEmail,
       }
     
       console.log("Caching token...");

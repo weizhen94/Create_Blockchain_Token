@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TokenService } from '../services/token.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   otpVerified = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private tokenService: TokenService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private tokenService: TokenService, private userService: UserService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -82,6 +83,10 @@ export class LoginComponent implements OnInit {
       next: response => {
         console.log(response);
         localStorage.setItem('token', response.jwt);
+
+        // set user's email in UserService
+        this.userService.setUserEmail(email);
+
         this.router.navigate(['/create']);
       },
       error: error => {
