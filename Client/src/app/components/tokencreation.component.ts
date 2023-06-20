@@ -93,6 +93,12 @@ export class TokencreationComponent implements OnInit {
       this.contractAddress = receipt.contractAddress;
       this.transactionHash = receipt.transactionHash;
 
+    const txHash = this.transactionHash; 
+
+    this.tokenService.getTransactionStatus({txHash}).subscribe(response => {
+      console.log(response);
+    });
+      
     // Converts the token supply from wei to ether
     const totalSupplyInEthers = this.web3.utils.fromWei(totalSupplyInWei, 'ether');
       

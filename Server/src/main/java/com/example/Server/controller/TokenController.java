@@ -1,11 +1,13 @@
 package com.example.Server.controller;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Server.jwt.JwtUtil;
 import com.example.Server.model.AuthenticationResponse;
+import com.example.Server.model.EtherscanRequest;
 import com.example.Server.model.OtpModel;
 import com.example.Server.model.TokenCaching;
 import com.example.Server.model.User;
 import com.example.Server.service.EmailService;
+import com.example.Server.service.EtherscanService;
 import com.example.Server.service.JwtUserDetailsService;
 import com.example.Server.service.TokenCachingService;
 import com.example.Server.service.UserService;
@@ -42,6 +46,9 @@ public class TokenController {
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private EtherscanService etherscanService;
 
     @Autowired
     private JwtUtil jwtTokenUtil;
@@ -133,6 +140,14 @@ public class TokenController {
         emailService.sendEmail(tokenCaching);
 
         return tokenCachingService.cacheTokenCreation(tokenCaching);
+    }
+
+    @PostMapping("/getTransactionStatus")
+    public ResponseEntity<String> getTransactionStatus(@RequestBody EtherscanRequest etherscanRequest) {
+
+        String txHash = etherscanRequest.getTxHash();
+
+        return etherscanService.getTransactionStatus(txHash);
     }
 
 }

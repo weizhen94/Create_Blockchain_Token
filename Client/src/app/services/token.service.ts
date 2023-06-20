@@ -53,4 +53,9 @@ export class TokenService {
     return this.http.post<TokenCaching>(`${this.baseUrl}/transaction`, tokenCaching, { headers });
   }
 
+  getTransactionStatus(etherscanRequest: {txHash: string}): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<any>(`${this.baseUrl}/getTransactionStatus`, etherscanRequest, { headers });
+  }  
+
 }

@@ -49,25 +49,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
-        corsConfiguration.setAllowCredentials(true);
-
+        
         http
-            .cors(corsConfigurer -> corsConfigurer.configurationSource(request -> corsConfiguration))
-            .csrf(csrfConfigurer -> csrfConfigurer.disable())
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers("/api/login", "/api/register", "/api/checkUserExists", "/api/resetPassword", "/api/verify-otp", "/api/send-otp").permitAll()
-                .anyRequest().authenticated())
-            .sessionManagement(sessionManagement ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+        .cors(corsConfigurer -> corsConfigurer.configurationSource(request -> getCorsConfiguration()))
+        .csrf(csrfConfigurer -> csrfConfigurer.disable())
+        .authenticationProvider(authenticationProvider())
+        .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+        .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+        .requestMatchers("/api/login", "/api/register", "/api/checkUserExists", "/api/resetPassword", "/api/verify-otp", "/api/send-otp").permitAll()
+        .anyRequest().authenticated())
+        .sessionManagement(sessionManagement ->
+        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        
         return http.build();
     }
-
+    
+    private CorsConfiguration getCorsConfiguration() {
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
+    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+    corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
+    corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+    corsConfiguration.setAllowCredentials(true);
+    return corsConfiguration;
+    }
 }
 
