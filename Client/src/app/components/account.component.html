@@ -20,28 +20,51 @@
           <mat-list-item>
             <span>Contract Address: {{token.contractAddress}}</span>
           </mat-list-item>
+          <mat-list-item>
+            <span>Transaction Hash: {{token.transactionHash}}</span>
+          </mat-list-item>
         </mat-list>
         <mat-divider></mat-divider>
       </div>
       <button mat-raised-button color="primary" routerLink="/create">Create More Tokens</button>
     </mat-card-content>
   </mat-card>
-  
-  <mat-card>
+
+<mat-card>
     <mat-card-header>
       <mat-card-title>Your Liquidity Pools:</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <button mat-raised-button color="primary" routerLink="/addliquidity">Add Liquidity</button>
-    </mat-card-content>
-  </mat-card>
-  
-  <mat-card>
+        <div *ngFor="let liquidity of liquidities">
+          <mat-list>
+            <mat-list-item>
+              <span>Token: {{liquidity.token}}</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span>Token Amount: {{liquidity.amountToken}}</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span>Liquidity Pair: {{liquidity.liquidityPair}}</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span>Liquidity Pair Amount: {{liquidity.amountLiquidityPair}}</span>
+            </mat-list-item>
+            <mat-list-item>
+                <span>Transaction Hash: {{liquidity.transactionHash}}</span>
+            </mat-list-item>
+          </mat-list>
+          <mat-divider></mat-divider>
+        </div>
+        <button mat-raised-button color="primary" routerLink="/addliquidity">Add Liquidity</button>
+      </mat-card-content>
+</mat-card>
+
+<mat-card>
     <mat-card-header>
       <mat-card-title>Your Swaps:</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <button mat-raised-button color="primary" routerLink="/swap">Swap</button>
     </mat-card-content>
-  </mat-card>
+</mat-card>
   

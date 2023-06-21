@@ -1,23 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Web3 from 'web3';
 
 import TokenContractABI from './TokenContractABI.json';
 import AMMContractABI from './AMMContractABI.json';
+import { Subscription } from 'rxjs';
+import { UserService } from '../services/user.service';
+import { TokenService } from '../services/token.service';
+import { Router } from '@angular/router';
+import { AddLiquidty } from '../models/add-liquidity';
 
 @Component({
   selector: 'app-addliquidity',
   templateUrl: './addliquidity.component.html',
   styleUrls: ['./addliquidity.component.css']
 })
-export class AddliquidityComponent implements OnInit {
+export class AddliquidityComponent implements OnInit, OnDestroy {
 
   web3: any;
   addLiquidityForm!: FormGroup;
   transactionHash!: string;
   contractAddress!: string;
+  userEmail!: string;
+  userEmailSubscription!: Subscription;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private tokenService: TokenService, private router: Router) { }
 
   ngOnInit() {
     if (window.ethereum) {
@@ -33,6 +40,10 @@ export class AddliquidityComponent implements OnInit {
       console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
 
+    this.userEmailSubscription = this.userService.getUserEmail().subscribe(email => {
+      this.userEmail = email;
+    });
+
     this.addLiquidityForm = this.formBuilder.group({
       network: this.formBuilder.control<string>('Sepolia Testnet', [Validators.required]),
       tokenA: this.formBuilder.control<string>('', [Validators.required]),
@@ -40,6 +51,12 @@ export class AddliquidityComponent implements OnInit {
       amountA: this.formBuilder.control<string>('', [Validators.required]),
       amountB: this.formBuilder.control<string>('', [Validators.required]),
     });
+  }
+
+  ngOnDestroy() {
+    if (this.userEmailSubscription) {
+      this.userEmailSubscription.unsubscribe();
+    }
   }
 
   async submit() {
@@ -90,6 +107,24 @@ export class AddliquidityComponent implements OnInit {
     }).on('receipt', (receipt: any) => {
       this.transactionHash = receipt.transactionHash; 
       console.log(receipt); 
+
+    const addLiquidity: AddLiquidty = {
+      token: tokenA,
+      liquidityPair: tokenB,
+      amountToken: this.addLiquidityForm.value.amountA,
+      amountLiquidityPair: this.addLiquidityForm.value.amountB,
+      transactionHash: this.transactionHash,
+      userEmail: this.userEmail,
+    }
+    
+    console.log("Caching add liquidity...");
+        this.tokenService.addLiquidityCaching(addLiquidity).subscribe(response => {
+          console.log(response);
+          this.router.navigate(['/account']);
+        });
+    })
+    .on('error', (error: Error) => {
+      console.error('Error while adding liquidity:', error);
     });
   }
   

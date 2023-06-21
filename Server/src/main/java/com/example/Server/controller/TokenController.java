@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Server.jwt.JwtUtil;
+import com.example.Server.model.AddLiquidity;
 import com.example.Server.model.AuthenticationResponse;
 import com.example.Server.model.EtherscanRequest;
 import com.example.Server.model.OtpModel;
@@ -138,7 +139,7 @@ public class TokenController {
     @PostMapping("/transaction")
     public Token saveTokenTransaction(@RequestBody Token token) {
 
-        emailService.sendEmail(token);
+        emailService.sendTokenEmail(token);
 
         mySQLService.saveToken(token);
 
@@ -147,17 +148,34 @@ public class TokenController {
 
     @PostMapping("/getTransactionStatus")
     public ResponseEntity<String> getTransactionStatus(@RequestBody EtherscanRequest etherscanRequest) {
-
+        
         String txHash = etherscanRequest.getTxHash();
-
+        
         return etherscanService.getTransactionStatus(txHash);
     }
-
+    
     @GetMapping("/getTokens")
     public List<Token> getTokensByEmail(@RequestParam("email") String email) {
+        
+        return mySQLService.getTokensByEmail(email);
+        
+    }
+    
+    @PostMapping("/addLiquidity")
+    public AddLiquidity saveLiquidityTransaction(@RequestBody AddLiquidity addLiquidity) {
 
-    return mySQLService.getTokensByEmail(email);
+        emailService.sendAddLiquidityEmail(addLiquidity);
 
+        mySQLService.saveAddLiquidity(addLiquidity);
+
+        return addLiquidity;
+    }
+
+    @GetMapping("/getLiquidity")
+    public List<AddLiquidity> getLiquidityByEmail(@RequestParam("email") String email) {
+        
+        return mySQLService.getLiquidityByEmail(email);
+        
     }
 
 }

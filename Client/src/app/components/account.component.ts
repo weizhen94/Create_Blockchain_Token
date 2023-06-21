@@ -11,6 +11,7 @@ export class AccountComponent implements OnInit{
 
   email!: string;
   tokens: any[] = [];
+  liquidities: any[] = [];
 
   constructor(private tokenService: TokenService, private userService: UserService) { }
 
@@ -18,11 +19,17 @@ export class AccountComponent implements OnInit{
     this.userService.getUserEmail().subscribe(email => {
       this.email = email;
       this.getTokensByEmail();
+      this.getLiquidityByEmail();
     });
   }
 
   getTokensByEmail(): void {
     this.tokenService.getTokensByEmail(this.email)
       .subscribe(tokens => this.tokens = tokens);
+  }
+
+  getLiquidityByEmail(): void {
+    this.tokenService.getLiquidityByEmail(this.email)
+      .subscribe(liquidities => this.liquidities = liquidities);
   }
 }

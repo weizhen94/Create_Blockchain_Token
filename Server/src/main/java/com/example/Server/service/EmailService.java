@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.example.Server.model.AddLiquidity;
 import com.example.Server.model.Token;
 
 @Service
@@ -16,11 +17,15 @@ public class EmailService {
 
     public void sendOtpEmail(String email, String otp) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("tokenforge257@gmail.com");
-            message.setTo(email);
-            message.setSubject("Your OTP");
-            message.setText("Your OTP is: " + otp);
+        String subject = "Your OTP Request";
+        String text = "You have requested for an OTP from Token Forge.\n\n" +
+            "Your OTP is: " + otp; 
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("tokenforge257@gmail.com");
+        message.setTo(email);
+        message.setSubject(subject);
+        message.setText(text);
 
             mailSender.send(message);
         } catch (MailException e) {
@@ -28,7 +33,7 @@ public class EmailService {
         }
     }
     
-    public void sendEmail(Token tokenCaching) {
+    public void sendTokenEmail(Token tokenCaching) {
     
     try {
         String subject = "Token Creation Success";
@@ -52,5 +57,29 @@ public class EmailService {
         System.out.println("Error while sending email: " + e.getMessage());
         }
 
+    }
+    
+    public void sendAddLiquidityEmail(AddLiquidity addLiquidity) {
+
+    try {
+        String subject = "Liquidity Successfully Added";
+        String text = "Congratulations, your liquidity pool has been successfully created. Here are the transaction details:\n\n" +
+            "Transaction Hash: " + addLiquidity.getTransactionHash() + "\n" +
+            "Network: Sepolia Testnet" + "\n" +
+            "Your Token: " + addLiquidity.getToken() + "\n" +
+            "Your Token Amount: " + addLiquidity.getAmountToken() + "\n" +
+            "Liquidity Pair: " + addLiquidity.getLiquidityPair() + "\n" +
+            "Liquidity Pair Amount: " + addLiquidity.getAmountLiquidityPair(); 
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("tokenforge257@gmail.com");
+        message.setTo(addLiquidity.getUserEmail());
+        message.setSubject(subject);
+        message.setText(text);
+
+        mailSender.send(message);
+        } catch (MailException e) {
+        System.out.println("Error while sending email: " + e.getMessage());
+        }
     }
 }

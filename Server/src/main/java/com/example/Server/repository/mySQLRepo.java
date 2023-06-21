@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import com.example.Server.model.AddLiquidity;
 import com.example.Server.model.RepoOtp;
 import com.example.Server.model.Token;
 import com.example.Server.model.User;
@@ -77,6 +78,17 @@ public class mySQLRepo {
     public List<Token> findTokensByEmail(String email) {
         final String findTokensByEmailSQL = "select * from token where user_email = ?";
         List<Token> tokens = jdbcTemplate.query(findTokensByEmailSQL, BeanPropertyRowMapper.newInstance(Token.class), email);
+        return tokens;
+    }
+
+    public void insertAddLiquidity(AddLiquidity addLiquidity) {
+        final String insertAddLiquiditySQL = "insert into liquidity (token, amount_token, liquidity_pair, amount_liquidity_pair, transaction_hash, user_email) values (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(insertAddLiquiditySQL, addLiquidity.getToken(), addLiquidity.getAmountToken(), addLiquidity.getLiquidityPair(), addLiquidity.getAmountLiquidityPair(), addLiquidity.getTransactionHash(), addLiquidity.getUserEmail());
+    }
+
+    public List<AddLiquidity> findLiquidityByEmail(String email) {
+        final String findLiquidityByEmailSQL = "select * from liquidity where user_email = ?";
+        List<AddLiquidity> tokens = jdbcTemplate.query(findLiquidityByEmailSQL, BeanPropertyRowMapper.newInstance(AddLiquidity.class), email);
         return tokens;
     }
     

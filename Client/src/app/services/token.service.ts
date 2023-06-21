@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { TokenCaching } from '../models/token-caching';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { AddLiquidty } from '../models/add-liquidity';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,11 @@ export class TokenService {
     return this.http.post<TokenCaching>(`${this.baseUrl}/transaction`, tokenCaching, { headers });
   }
 
+  addLiquidityCaching(addLiquidity: AddLiquidty): Observable<AddLiquidty> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<AddLiquidty>(`${this.baseUrl}/addLiquidity`, addLiquidity, { headers });
+  }
+
   getTransactionStatus(etherscanRequest: {txHash: string}): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post<any>(`${this.baseUrl}/getTransactionStatus`, etherscanRequest, { headers });
@@ -61,6 +67,11 @@ export class TokenService {
   getTokensByEmail(email: string): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.baseUrl}/getTokens?email=${email}`, { headers });
+  }
+
+  getLiquidityByEmail(email: string): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.baseUrl}/getLiquidity?email=${email}`, { headers });
   }
 
 }

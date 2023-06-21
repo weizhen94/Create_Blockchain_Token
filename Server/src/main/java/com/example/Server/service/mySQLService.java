@@ -2,6 +2,7 @@ package com.example.Server.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.Server.model.AddLiquidity;
 import com.example.Server.model.RepoOtp;
 import com.example.Server.model.Token;
 import com.example.Server.model.User;
@@ -61,15 +62,18 @@ public class mySQLService {
     }
 
     public void saveToken(Token token) {
-
         mySQLRepo.insertToken(token);
-
-    }
-
-    public List<Token> getTokensByEmail(String email) {
-
-        return mySQLRepo.findTokensByEmail(email);
-        
     }
     
+    public List<Token> getTokensByEmail(String email) {
+        return mySQLRepo.findTokensByEmail(email);
+    }
+    
+    public void saveAddLiquidity(AddLiquidity addLiquidity) {
+        mySQLRepo.insertAddLiquidity(addLiquidity);
+    }
+
+    public List<AddLiquidity> getLiquidityByEmail(String email) {
+        return mySQLRepo.findLiquidityByEmail(email);
+    }
 }
