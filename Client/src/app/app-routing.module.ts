@@ -15,9 +15,9 @@ const routes: Routes = [
   {path:"register", component: RegisterComponent},
   {path:"reset-password", component: ResetPasswordComponent},
   {path:"create", component: TokencreationComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
-  {path:"addliquidity", component: AddliquidityComponent},
-  {path:"swap", component: SwapComponent},
-  {path:"account", component: AccountComponent},
+  {path:"addliquidity", component: AddliquidityComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
+  {path:"swap", component: SwapComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
+  {path:"account", component: AccountComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
   {path:"**", redirectTo: "/", pathMatch: 'full'},
 ];
 

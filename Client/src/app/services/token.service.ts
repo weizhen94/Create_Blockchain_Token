@@ -42,8 +42,7 @@ export class TokenService {
   }
 
   resetPassword(user: {email: string, password: string}): Observable<any> {
-    console.log('from reset-password service: ', user.email, user.password);
-    return this.http.post<any>(`${this.baseUrl}/resetPassword`, user);
+    return this.http.put<any>(`${this.baseUrl}/resetPassword`, user);
   }
 
   checkUserExists(user: {email: string}): Observable<any> {
