@@ -9,6 +9,7 @@ import com.example.Server.repository.mySQLRepo;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -64,4 +65,11 @@ public class mySQLService {
         mySQLRepo.insertToken(token);
 
     }
+
+    public List<Token> getTokensByEmail(String email) {
+
+        return mySQLRepo.findTokensByEmail(email);
+        
+    }
+    
 }

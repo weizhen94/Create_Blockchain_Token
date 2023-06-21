@@ -8,6 +8,7 @@ import { AuthGuard } from './auth.guard';
 import { inject } from '@angular/core';
 import { AddliquidityComponent } from './components/addliquidity.component';
 import { SwapComponent } from './components/swap.component';
+import { AccountComponent } from './components/account.component';
 
 const routes: Routes = [
   {path:"", component: LoginComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path:"create", component: TokencreationComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
   {path:"addliquidity", component: AddliquidityComponent},
   {path:"swap", component: SwapComponent},
+  {path:"account", component: AccountComponent},
   {path:"**", redirectTo: "/", pathMatch: 'full'},
 ];
 

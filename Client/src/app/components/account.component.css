@@ -1,0 +1,41 @@
+/* This will apply to the overall container of the card */
+mat-card {
+    margin: 2em auto;
+    padding: 1em;
+    background-color: #F1F1F1;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+    max-width: 80%;
+}
+
+/* This will apply to the header of the card */
+mat-card-header {
+    font-size: 2em;
+    font-weight: bold;
+    color: #344d5f;
+    margin-bottom: 1em;
+}
+
+/* This will apply to the content of the card */
+mat-card-content {
+    font-size: 1em;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* This will apply to the title of the card */
+mat-card-title {
+    font-size: 1em;
+    color: #43596a;
+}
+
+/* This will apply to each list item within the card */
+mat-list-item {
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+/* This will apply to the button within the card */
+button {
+    margin-top: 1em;
+}

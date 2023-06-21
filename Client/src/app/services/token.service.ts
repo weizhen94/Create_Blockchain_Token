@@ -58,4 +58,9 @@ export class TokenService {
     return this.http.post<any>(`${this.baseUrl}/getTransactionStatus`, etherscanRequest, { headers });
   }  
 
+  getTokensByEmail(email: string): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.baseUrl}/getTokens?email=${email}`, { headers });
+  }
+
 }

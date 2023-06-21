@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
         // set user's email in UserService
         this.userService.setUserEmail(email);
 
-        this.router.navigate(['/create']);
+        this.router.navigate(['/account']);
       },
       error: error => {
         console.log(error);

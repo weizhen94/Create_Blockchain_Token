@@ -73,4 +73,11 @@ public class mySQLRepo {
         final String insertTokenSQL = "insert into token (token_name, token_symbol, decimals, total_supply, contract_address, transaction_hash, user_address, user_email) values (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(insertTokenSQL, token.getTokenName(), token.getTokenSymbol(), token.getDecimals(), token.getTotalSupply(), token.getContractAddress(), token.getTransactionHash(), token.getUserAddress(), token.getUserEmail());
     }
+
+    public List<Token> findTokensByEmail(String email) {
+        final String findTokensByEmailSQL = "select * from token where user_email = ?";
+        List<Token> tokens = jdbcTemplate.query(findTokensByEmailSQL, BeanPropertyRowMapper.newInstance(Token.class), email);
+        return tokens;
+    }
+    
 }

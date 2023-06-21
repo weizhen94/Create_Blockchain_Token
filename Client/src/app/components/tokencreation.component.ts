@@ -9,6 +9,7 @@ import { TokenService } from '../services/token.service';
 import { TokenCaching } from '../models/token-caching';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 declare global {
   interface Window { ethereum: any; web3: any; }
@@ -28,7 +29,7 @@ export class TokencreationComponent implements OnInit, OnDestroy {
   userEmail!: string;
   userEmailSubscription!: Subscription;
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private tokenService: TokenService, private userService: UserService) { }
+  constructor(private formBuilder: FormBuilder, private tokenService: TokenService, private userService: UserService, private router: Router) { }
 
   ngOnInit() {
     // Initialize web3
@@ -132,6 +133,7 @@ export class TokencreationComponent implements OnInit, OnDestroy {
       console.log("Caching token...");
       this.tokenService.addTokenCaching(tokenCaching).subscribe(response => {
         console.log(response);
+        this.router.navigate(['/account']);
       });
     });
   }

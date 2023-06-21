@@ -23,6 +23,7 @@ import { NavbarComponent } from './components/navbar.component';
 import { ResetPasswordComponent } from './components/reset-password.component';
 import { AddliquidityComponent } from './components/addliquidity.component';
 import { SwapComponent } from './components/swap.component';
+import { AccountComponent } from './components/account.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SwapComponent } from './components/swap.component';
     ResetPasswordComponent,
     AddliquidityComponent,
     SwapComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,

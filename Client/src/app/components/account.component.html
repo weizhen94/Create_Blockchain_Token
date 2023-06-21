@@ -1,0 +1,47 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Your Tokens:</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let token of tokens">
+        <mat-list>
+          <mat-list-item>
+            <h2 matLine>{{token.tokenName}}</h2>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Symbol: {{token.tokenSymbol}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Decimals: {{token.decimals}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Total Supply: {{token.totalSupply}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span>Contract Address: {{token.contractAddress}}</span>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+      </div>
+      <button mat-raised-button color="primary" routerLink="/create">Create More Tokens</button>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Your Liquidity Pools:</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <button mat-raised-button color="primary" routerLink="/addliquidity">Add Liquidity</button>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Your Swaps:</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <button mat-raised-button color="primary" routerLink="/swap">Swap</button>
+    </mat-card-content>
+  </mat-card>
+  
