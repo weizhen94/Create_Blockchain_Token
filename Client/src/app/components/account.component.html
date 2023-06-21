@@ -64,7 +64,24 @@
       <mat-card-title>Your Swaps:</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <button mat-raised-button color="primary" routerLink="/swap">Swap</button>
-    </mat-card-content>
+        <div *ngFor="let swap of swaps">
+          <mat-list>
+            <mat-list-item>
+              <span>Token In: {{swap.tokenIn}}</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span>Amount In: {{swap.amountIn}}</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span>Token Out: {{swap.tokenOut}}</span>
+            </mat-list-item>
+            <mat-list-item>
+                <span>Transaction Hash: {{swap.transactionHash}}</span>
+            </mat-list-item>
+          </mat-list>
+          <mat-divider></mat-divider>
+        </div>
+        <button mat-raised-button color="primary" routerLink="/swap">Swap</button>
+      </mat-card-content>
 </mat-card>
   

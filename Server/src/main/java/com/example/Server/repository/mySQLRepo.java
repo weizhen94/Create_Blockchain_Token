@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.Server.model.AddLiquidity;
 import com.example.Server.model.RepoOtp;
+import com.example.Server.model.Swap;
 import com.example.Server.model.Token;
 import com.example.Server.model.User;
 
@@ -88,8 +89,19 @@ public class mySQLRepo {
 
     public List<AddLiquidity> findLiquidityByEmail(String email) {
         final String findLiquidityByEmailSQL = "select * from liquidity where user_email = ?";
-        List<AddLiquidity> tokens = jdbcTemplate.query(findLiquidityByEmailSQL, BeanPropertyRowMapper.newInstance(AddLiquidity.class), email);
-        return tokens;
+        List<AddLiquidity> addLiquidity = jdbcTemplate.query(findLiquidityByEmailSQL, BeanPropertyRowMapper.newInstance(AddLiquidity.class), email);
+        return addLiquidity;
+    }
+
+    public void insertSwap(Swap swap) {
+        final String insertSwapSQL = "insert into swap (token_in, amount_in, token_out, transaction_hash, user_email) values (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(insertSwapSQL, swap.getTokenIn(), swap.getAmountIn(), swap.getTokenOut(), swap.getTransactionHash(), swap.getUserEmail());
+    }
+
+    public List<Swap> findSwapByEmail(String email) {
+        final String findSwapByEmailSQL = "select * from swap where user_email = ?";
+        List<Swap> swap = jdbcTemplate.query(findSwapByEmailSQL, BeanPropertyRowMapper.newInstance(Swap.class), email);
+        return swap;
     }
     
 }

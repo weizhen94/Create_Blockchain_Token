@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Web3 from 'web3';
 
 import TokenContractABI from './TokenContractABI.json';
 import AMMContractABI from './AMMContractABI.json';
+import { UserService } from '../services/user.service';
+import { TokenService } from '../services/token.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Swap } from '../models/swap';
 
 declare global {
   interface Window { ethereum: any; web3: any; }
@@ -14,14 +19,16 @@ declare global {
   templateUrl: './swap.component.html',
   styleUrls: ['./swap.component.css']
 })
-export class SwapComponent implements OnInit {
+export class SwapComponent implements OnInit, OnDestroy{
 
   web3: any;
   swapForm!: FormGroup;
   transactionHash!: string;
   contractAddress!: string;
+  userEmail!: string;
+  userEmailSubscription!: Subscription;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private tokenService: TokenService, private router: Router) { }
 
   ngOnInit() {
     if (window.ethereum) {
@@ -37,6 +44,10 @@ export class SwapComponent implements OnInit {
       console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
 
+    this.userEmailSubscription = this.userService.getUserEmail().subscribe(email => {
+      this.userEmail = email;
+    });
+
     this.swapForm = this.formBuilder.group({
       network: this.formBuilder.control<string>('Sepolia Testnet', [Validators.required]),
       tokenIn: this.formBuilder.control<string>('', [Validators.required]),
@@ -44,6 +55,12 @@ export class SwapComponent implements OnInit {
       amountIn: this.formBuilder.control<string>('', [Validators.required]),
       slippage: this.formBuilder.control<number>(0, [Validators.required, Validators.pattern("^[0-9]*$")]),
     });
+  }
+
+  ngOnDestroy() {
+    if (this.userEmailSubscription) {
+      this.userEmailSubscription.unsubscribe();
+    }
   }
 
   async submit() {
@@ -73,8 +90,9 @@ export class SwapComponent implements OnInit {
     const slippage = this.swapForm.value.slippage;
 
     // Interact with the tokens
-    const tokenAContract = new this.web3.eth.Contract(TokenContractABI, tokenIn);
-  
+    const checksummedTokenIn = this.web3.utils.toChecksumAddress(tokenIn);
+    const tokenAContract = new this.web3.eth.Contract(TokenContractABI, checksummedTokenIn);
+
     // Approve the contract to spend the tokens
     await tokenAContract.methods.approve(contractAddress, amountInInWei).send({ from: account });
     console.log("Approved amount In!");
@@ -89,6 +107,23 @@ export class SwapComponent implements OnInit {
     }).on('receipt', (receipt: any) => {
       this.transactionHash = receipt.transactionHash; 
       console.log(receipt); 
+    
+    const swap: Swap = {
+        tokenIn: tokenIn,
+        amountIn: this.swapForm.value.amountIn,
+        tokenOut: tokenOut,
+        transactionHash: this.transactionHash,
+        userEmail: this.userEmail,
+      }
+      
+    console.log("Caching swap...");
+          this.tokenService.addSwapCaching(swap).subscribe(response => {
+            console.log(response);
+            this.router.navigate(['/account']);
+          });
+      })
+      .on('error', (error: Error) => {
+        console.error('Error while swapping:', error);
     });
   }
 

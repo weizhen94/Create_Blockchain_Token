@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.example.Server.model.AddLiquidity;
+import com.example.Server.model.Swap;
 import com.example.Server.model.Token;
 
 @Service
@@ -82,4 +83,27 @@ public class EmailService {
         System.out.println("Error while sending email: " + e.getMessage());
         }
     }
+
+    public void sendSwapEmail(Swap swap) {
+
+        try {
+            String subject = "Swap Successful";
+            String text = "Congratulations, your Swap has been successfully processed. Here are the transaction details:\n\n" +
+                "Transaction Hash: " + swap.getTransactionHash() + "\n" +
+                "Network: Sepolia Testnet" + "\n" +
+                "Token In: " + swap.getTokenIn() + "\n" +
+                "Amount In: " + swap.getAmountIn() + "\n" +
+                "Token Out: " + swap.getTokenOut();
+    
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("tokenforge257@gmail.com");
+            message.setTo(swap.getUserEmail());
+            message.setSubject(subject);
+            message.setText(text);
+    
+            mailSender.send(message);
+            } catch (MailException e) {
+            System.out.println("Error while sending email: " + e.getMessage());
+            }
+        }
 }

@@ -88,8 +88,11 @@ export class AddliquidityComponent implements OnInit, OnDestroy {
     console.log("Amount A In wei:", amountBInWei);
   
     // Interact with the tokens
-    const tokenAContract = new this.web3.eth.Contract(TokenContractABI, tokenA);
-    const tokenBContract = new this.web3.eth.Contract(TokenContractABI, tokenB);
+    const checksummedTokenA = this.web3.utils.toChecksumAddress(tokenA);
+    const tokenAContract = new this.web3.eth.Contract(TokenContractABI, checksummedTokenA);
+   
+    const checksummedTokenB = this.web3.utils.toChecksumAddress(tokenB);
+    const tokenBContract = new this.web3.eth.Contract(TokenContractABI, checksummedTokenB);
     
     // Approve the contract to spend the tokens
     await tokenAContract.methods.approve(contractAddress, amountAInWei).send({ from: account });

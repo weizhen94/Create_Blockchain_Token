@@ -12,6 +12,7 @@ export class AccountComponent implements OnInit{
   email!: string;
   tokens: any[] = [];
   liquidities: any[] = [];
+  swaps: any[] = [];
 
   constructor(private tokenService: TokenService, private userService: UserService) { }
 
@@ -20,6 +21,7 @@ export class AccountComponent implements OnInit{
       this.email = email;
       this.getTokensByEmail();
       this.getLiquidityByEmail();
+      this.getSwapByEmail();
     });
   }
 
@@ -31,5 +33,10 @@ export class AccountComponent implements OnInit{
   getLiquidityByEmail(): void {
     this.tokenService.getLiquidityByEmail(this.email)
       .subscribe(liquidities => this.liquidities = liquidities);
+  }
+
+  getSwapByEmail(): void {
+    this.tokenService.getSwapByEmail(this.email)
+      .subscribe(swaps => this.swaps = swaps);
   }
 }

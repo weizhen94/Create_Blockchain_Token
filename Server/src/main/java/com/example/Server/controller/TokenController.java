@@ -19,6 +19,7 @@ import com.example.Server.model.AddLiquidity;
 import com.example.Server.model.AuthenticationResponse;
 import com.example.Server.model.EtherscanRequest;
 import com.example.Server.model.OtpModel;
+import com.example.Server.model.Swap;
 import com.example.Server.model.Token;
 import com.example.Server.model.User;
 import com.example.Server.service.EmailService;
@@ -175,6 +176,23 @@ public class TokenController {
     public List<AddLiquidity> getLiquidityByEmail(@RequestParam("email") String email) {
         
         return mySQLService.getLiquidityByEmail(email);
+        
+    }
+
+    @PostMapping("/addSwap")
+    public Swap saveSwapTransaction(@RequestBody Swap swap) {
+
+        emailService.sendSwapEmail(swap);
+
+        mySQLService.saveSwapLiquidity(swap);
+
+        return swap;
+    }
+
+    @GetMapping("/getSwap")
+    public List<Swap> getSwapByEmail(@RequestParam("email") String email) {
+        
+        return mySQLService.getSwapByEmail(email);
         
     }
 

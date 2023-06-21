@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Server.model.AddLiquidity;
 import com.example.Server.model.RepoOtp;
+import com.example.Server.model.Swap;
 import com.example.Server.model.Token;
 import com.example.Server.model.User;
 import com.example.Server.repository.mySQLRepo;
@@ -75,5 +76,13 @@ public class mySQLService {
 
     public List<AddLiquidity> getLiquidityByEmail(String email) {
         return mySQLRepo.findLiquidityByEmail(email);
+    }
+
+    public void saveSwapLiquidity(Swap swap) {
+        mySQLRepo.insertSwap(swap);
+    }
+
+    public List<Swap> getSwapByEmail(String email) {
+        return mySQLRepo.findSwapByEmail(email);
     }
 }
