@@ -27,6 +27,7 @@ export class SwapComponent implements OnInit, OnDestroy{
   contractAddress!: string;
   userEmail!: string;
   userEmailSubscription!: Subscription;
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, private tokenService: TokenService, private router: Router) { }
 
@@ -67,6 +68,8 @@ export class SwapComponent implements OnInit, OnDestroy{
     if (this.swapForm.invalid) {
       return;
     }
+
+    this.isLoading = true;
   
     // Get the network
     const network = this.swapForm.value.network;
@@ -119,6 +122,7 @@ export class SwapComponent implements OnInit, OnDestroy{
     console.log("Caching swap...");
           this.tokenService.addSwapCaching(swap).subscribe(response => {
             console.log(response);
+            this.isLoading = false;
             this.router.navigate(['/account']);
           });
       })

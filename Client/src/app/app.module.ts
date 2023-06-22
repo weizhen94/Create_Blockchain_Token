@@ -17,6 +17,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { RegisterComponent } from './components/register.component';
 import { LoginComponent } from './components/login.component';
 import { NavbarComponent } from './components/navbar.component';
@@ -52,6 +54,7 @@ import { AccountComponent } from './components/account.component';
     MatSnackBarModule,
     MatListModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

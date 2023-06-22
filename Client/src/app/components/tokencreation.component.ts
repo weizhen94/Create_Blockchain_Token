@@ -28,6 +28,7 @@ export class TokencreationComponent implements OnInit, OnDestroy {
   transactionHash!: string;
   userEmail!: string;
   userEmailSubscription!: Subscription;
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder, private tokenService: TokenService, private userService: UserService, private router: Router) { }
 
@@ -72,6 +73,8 @@ export class TokencreationComponent implements OnInit, OnDestroy {
     }
 
     console.log("Creating token...");
+
+    this.isLoading = true;
 
     // Get the network
     const network = this.createTokenForm.value.network;
@@ -133,8 +136,12 @@ export class TokencreationComponent implements OnInit, OnDestroy {
       console.log("Caching token...");
       this.tokenService.addTokenCaching(tokenCaching).subscribe(response => {
         console.log(response);
+        this.isLoading = false;
         this.router.navigate(['/account']);
       });
+    })
+      .on('error', (error: Error) => {
+        console.error('Error while creating token:', error);
     });
   }
 

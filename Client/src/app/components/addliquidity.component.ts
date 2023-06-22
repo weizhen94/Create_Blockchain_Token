@@ -23,6 +23,7 @@ export class AddliquidityComponent implements OnInit, OnDestroy {
   contractAddress!: string;
   userEmail!: string;
   userEmailSubscription!: Subscription;
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, private tokenService: TokenService, private router: Router) { }
 
@@ -63,6 +64,8 @@ export class AddliquidityComponent implements OnInit, OnDestroy {
     if (this.addLiquidityForm.invalid) {
       return;
     }
+
+    this.isLoading = true;
   
     // Get the network
     const network = this.addLiquidityForm.value.network;
@@ -123,6 +126,7 @@ export class AddliquidityComponent implements OnInit, OnDestroy {
     console.log("Caching add liquidity...");
         this.tokenService.addLiquidityCaching(addLiquidity).subscribe(response => {
           console.log(response);
+          this.isLoading = false;
           this.router.navigate(['/account']);
         });
     })

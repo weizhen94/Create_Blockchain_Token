@@ -1,4 +1,7 @@
 <div class="container mat-typography">
+    <div *ngIf="isLoading" class="spinner-container">
+        <img src="/assets/astronaut.gif">
+    </div>
     <form [formGroup]="swapForm" (ngSubmit)="submit()">
 
         <mat-form-field appearance="fill">

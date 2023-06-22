@@ -1,4 +1,7 @@
 <div class="container mat-typography">
+    <div *ngIf="isLoading" class="spinner-container">
+        <img src="/assets/astronaut.gif">
+    </div>
     <form [formGroup]="addLiquidityForm" (ngSubmit)="submit()">
 
         <mat-form-field appearance="fill">
@@ -31,4 +34,3 @@
         <button mat-raised-button color="primary" type="submit">Add Liquidity</button>
     </form>
 </div>
-
