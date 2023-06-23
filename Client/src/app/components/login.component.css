@@ -1,32 +1,38 @@
-mat-card-title {
-    font-size: 2em; 
-    font-weight: bold;  
-    text-align: center; 
-    color: #344955;
+mat-card {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-mat-card {
-    max-width: 400px;
-    margin: 2em auto;
-    text-align: center;
-    
-  }
-  
-mat-form-field {
-    width: 100%;
-    
-  }
-  
-  button {
-    margin-top: 1em;
-  }
+mat-card-header {
+  background-color: #2c5477;
+  color: #fff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
 
-  button:hover {
-    background-color: #28384c; 
+mat-card-title {
+  font-size: 2em; 
+  font-weight: bold;  
+  color: #fff;
+}
+
+mat-form-field {
+  width: 80%;
+  margin: 1em auto;
+}
+
+button {
+  margin-top: 1em;
+  width: 80%;
+}
+
+button:hover {
+  background-color: #1c4e80;
 }
 
 .login-button {
-    margin-right: 20px;
+  margin-right: 0px;
 }
-
-  

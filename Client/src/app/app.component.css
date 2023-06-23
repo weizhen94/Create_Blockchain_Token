@@ -1,0 +1,16 @@
+.main-container__bg {
+    background-color: #031B34;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    transition: background 300ms linear;
+    padding-top: 2rem;
+}
+
+.main-container__bg-dark {
+    background-color: #161B33;
+}
+
+

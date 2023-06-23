@@ -66,7 +66,7 @@ public class SecurityConfig {
     
     private CorsConfiguration getCorsConfiguration() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
-    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://tenor.com/en-SG/view/cat-loading-error-angry-whydoesthishappen-gif-8985245"));
+    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
     corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
     corsConfiguration.setAllowCredentials(true);

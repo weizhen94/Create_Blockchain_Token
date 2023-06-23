@@ -19,8 +19,10 @@ public class EmailService {
     public void sendOtpEmail(String email, String otp) {
         try {
         String subject = "Your OTP Request";
-        String text = "You have requested for an OTP from Token Forge.\n\n" +
-            "Your OTP is: " + otp; 
+        String text = "Hello, you have requested for an OTP from Token Forge.\n\n" +
+            "Your OTP is: " + otp + "\n" +
+            "\n" +
+            "Head back to Token Forge and copy this code into the confirmation box. This code will be valid for 5 minutes.";
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("tokenforge257@gmail.com");

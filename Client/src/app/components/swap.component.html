@@ -1,7 +1,11 @@
-<div class="container mat-typography">
-    <div *ngIf="isLoading" class="spinner-container">
-        <img src="/assets/astronaut.gif">
-    </div>
+<mat-card class="mat-typography">
+    <mat-card-header>
+      <mat-card-title>Swap Tokens</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="isLoading" class="spinner-container">
+            <img src="/assets/astronaut.gif">
+        </div>
     <form [formGroup]="swapForm" (ngSubmit)="submit()">
 
         <mat-form-field appearance="fill">
@@ -33,6 +37,7 @@
 
         <button mat-raised-button color="primary" type="submit">Swap Tokens</button>
     </form>
-</div>
+    </mat-card-content>
+</mat-card>
 
            

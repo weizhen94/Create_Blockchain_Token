@@ -1,10 +1,15 @@
 <mat-toolbar>
-    <button mat-button routerLink="/account">Account</button>
-    <button mat-button routerLink="/create">Token Creation</button>
-    <button mat-button routerLink="/addliquidity">Add Liquidity</button>
-    <button mat-button routerLink="/swap">Swap</button>
-    <button mat-button routerLink="/register">Register</button>
-    <button mat-button routerLink="/">Login</button>
-    <button mat-button (click)="logout()">Logout</button>
+    <div class="left-nav-items">
+        <img src="assets/logo.png" class="logo" alt="Logo">
+        <button mat-icon-button routerLink="/"><mat-icon>home</mat-icon></button>
+        <button mat-icon-button routerLink="/account"><mat-icon>account_circle</mat-icon></button>
+        <button mat-icon-button routerLink="/create"><mat-icon>cloud_upload</mat-icon></button>
+        <button mat-icon-button routerLink="/addliquidity"><mat-icon>control_point</mat-icon></button>
+        <button mat-icon-button routerLink="/swap"><mat-icon>swap_horizontal_circle</mat-icon></button>
+    </div>
+    <div class="right-nav-items">
+        <button mat-button routerLink="/register">Register</button>
+        <button mat-button routerLink="/">Login</button>
+        <button mat-button (click)="logout()">Logout</button>
+    </div>
 </mat-toolbar>
-  

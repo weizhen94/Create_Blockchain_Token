@@ -1,31 +1,35 @@
-<div class="container mat-typography">
-    <div *ngIf="isLoading" class="spinner-container">
-        <img src="/assets/astronaut.gif">
-    </div>
-    <form [formGroup]="createTokenForm" (ngSubmit)="submit()">
+<mat-card class="mat-typography">
+    <mat-card-header>
+      <mat-card-title>Create Token</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="isLoading" class="spinner-container">
+            <img src="/assets/astronaut.gif">
+        </div>
+        <form [formGroup]="createTokenForm" (ngSubmit)="submit()">
+            <mat-form-field appearance="fill">
+                <mat-label>Network</mat-label>
+                <mat-select id="network" formControlName="network">
+                    <mat-option value="Sepolia Testnet">Sepolia Testnet</mat-option>
+                </mat-select>
+            </mat-form-field>
+              
+            <mat-form-field appearance="fill">
+                <mat-label>Token Name</mat-label>
+                <input matInput type="text" id="tokenName" formControlName="tokenName">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Network</mat-label>
-            <mat-select id="network" formControlName="network">
-                <mat-option value="Sepolia Testnet">Sepolia Testnet</mat-option>
-            </mat-select>
-        </mat-form-field>
-          
-        <mat-form-field appearance="fill">
-            <mat-label>Token Name</mat-label>
-            <input matInput type="text" id="tokenName" formControlName="tokenName">
-        </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Token Symbol</mat-label>
+                <input matInput type="text" id="tokenSymbol" formControlName="tokenSymbol">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Token Symbol</mat-label>
-            <input matInput type="text" id="tokenSymbol" formControlName="tokenSymbol">
-        </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Total Supply</mat-label>
+                <input matInput type="text" id="totalSupply" formControlName="totalSupply">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Total Supply</mat-label>
-            <input matInput type="text" id="totalSupply" formControlName="totalSupply">
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" type="submit">Create Token</button>
-    </form>
-</div>
+            <button mat-raised-button color="primary" type="submit">Create Token</button>
+        </form>
+    </mat-card-content>
+</mat-card>
