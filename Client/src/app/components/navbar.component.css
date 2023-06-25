@@ -1,5 +1,5 @@
 mat-toolbar {
-  background-color: #06254a;
+  background-color: #140A35;
   display: flex;
   justify-content: space-between;
 }
@@ -20,15 +20,15 @@ mat-toolbar button:hover {
 }
 
 .logo {
-  width: 150px;
-  height: 50px;
-  margin-right: 20px;
+  width: 155px;
+  height: 52px;
+  margin-right: 5px;
 }
 
 mat-icon {
-  font-size: 30px; /* Set your desired size here */
-  height: 30px; /* Should be same as font-size */
-  width: 30px; /* Should be same as font-size */
-  line-height: 25px; /* Should be same as font-size */
+  font-size: 30px;
+  height: 30px;
+  width: 30px;
+  line-height: 25px;
 }
 

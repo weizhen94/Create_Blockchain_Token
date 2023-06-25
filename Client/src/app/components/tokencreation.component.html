@@ -4,7 +4,7 @@
     </mat-card-header>
     <mat-card-content>
         <div *ngIf="isLoading" class="spinner-container">
-            <img src="/assets/astronaut.gif">
+            <img src="/assets/waiting.gif">
         </div>
         <form [formGroup]="createTokenForm" (ngSubmit)="submit()">
             <mat-form-field appearance="fill">

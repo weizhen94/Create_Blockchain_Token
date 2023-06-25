@@ -26,6 +26,7 @@ import { ResetPasswordComponent } from './components/reset-password.component';
 import { AddliquidityComponent } from './components/addliquidity.component';
 import { SwapComponent } from './components/swap.component';
 import { AccountComponent } from './components/account.component';
+import { HomeComponent } from './components/home.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AccountComponent } from './components/account.component';
     AddliquidityComponent,
     SwapComponent,
     AccountComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

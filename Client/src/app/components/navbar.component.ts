@@ -13,7 +13,7 @@ export class NavbarComponent {
   logout() {
     localStorage.removeItem('token');
     console.log("Successfully logged out: Jwt deleted");
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
 }

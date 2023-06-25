@@ -9,9 +9,11 @@ import { inject } from '@angular/core';
 import { AddliquidityComponent } from './components/addliquidity.component';
 import { SwapComponent } from './components/swap.component';
 import { AccountComponent } from './components/account.component';
+import { HomeComponent } from './components/home.component';
 
 const routes: Routes = [
-  {path:"", component: LoginComponent},
+  {path:"", component: HomeComponent},
+  {path:"login", component: LoginComponent},
   {path:"register", component: RegisterComponent},
   {path:"reset-password", component: ResetPasswordComponent},
   {path:"create", component: TokencreationComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
