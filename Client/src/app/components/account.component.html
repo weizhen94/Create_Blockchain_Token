@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-header>
-      <mat-card-title>Your Tokens:</mat-card-title>
+      <mat-card-title>Created Token:</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div *ngFor="let token of tokens">
@@ -26,19 +26,19 @@
         </mat-list>
         <mat-divider></mat-divider>
       </div>
-      <button mat-raised-button color="primary" routerLink="/create">Create More Tokens</button>
+      <button mat-raised-button color="primary" routerLink="/create">Create Tokens</button>
     </mat-card-content>
   </mat-card>
 
 <mat-card>
     <mat-card-header>
-      <mat-card-title>Your Liquidity Pools:</mat-card-title>
+      <mat-card-title>Created Liquidity Pool:</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <div *ngFor="let liquidity of liquidities">
           <mat-list>
             <mat-list-item>
-              <span>Token: {{liquidity.token}}</span>
+              <span>Your Token: {{liquidity.token}}</span>
             </mat-list-item>
             <mat-list-item>
               <span>Token Amount: {{liquidity.amountToken}}</span>
@@ -55,25 +55,25 @@
           </mat-list>
           <mat-divider></mat-divider>
         </div>
-        <button mat-raised-button color="primary" routerLink="/addliquidity">Add Liquidity</button>
+        <button mat-raised-button color="primary" routerLink="/addliquidity">Create Liquidity Pool</button>
       </mat-card-content>
 </mat-card>
 
 <mat-card>
     <mat-card-header>
-      <mat-card-title>Your Swaps:</mat-card-title>
+      <mat-card-title>Exchanged Tokens:</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <div *ngFor="let swap of swaps">
           <mat-list>
             <mat-list-item>
-              <span>Token In: {{swap.tokenIn}}</span>
+              <span>Tokens(Give): {{swap.tokenIn}}</span>
             </mat-list-item>
             <mat-list-item>
-              <span>Amount In: {{swap.amountIn}}</span>
+              <span>Tokens(Give) Amount: {{swap.amountIn}}</span>
             </mat-list-item>
             <mat-list-item>
-              <span>Token Out: {{swap.tokenOut}}</span>
+              <span>Tokens(Get): {{swap.tokenOut}}</span>
             </mat-list-item>
             <mat-list-item>
                 <span>Transaction Hash: {{swap.transactionHash}}</span>
@@ -81,7 +81,7 @@
           </mat-list>
           <mat-divider></mat-divider>
         </div>
-        <button mat-raised-button color="primary" routerLink="/swap">Swap</button>
+        <button mat-raised-button color="primary" routerLink="/swap">Exchange Tokens</button>
       </mat-card-content>
 </mat-card>
   

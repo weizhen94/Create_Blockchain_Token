@@ -1,6 +1,6 @@
 <mat-card class="mat-typography">
     <mat-card-header>
-      <mat-card-title>Swap Tokens</mat-card-title>
+      <mat-card-title>Exchange Tokens</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <div *ngIf="isLoading" class="spinner-container">
@@ -16,22 +16,22 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Token In</mat-label>
+            <mat-label>Tokens(Give)</mat-label>
             <input matInput type="text" id="tokenIn" formControlName="tokenIn">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Token Out</mat-label>
+            <mat-label>Tokens(Get)</mat-label>
             <input matInput type="text" id="tokenOut" formControlName="tokenOut">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Amount In</mat-label>
+            <mat-label>Amount: Tokens(Give)</mat-label>
             <input matInput type="text" id="amountIn" formControlName="amountIn">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Max Slippage</mat-label>
+            <mat-label>Max Slippage (in Percentage)</mat-label>
             <input matInput type="number" id="slippage" formControlName="slippage">
         </mat-form-field>
 

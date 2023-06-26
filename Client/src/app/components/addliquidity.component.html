@@ -1,6 +1,6 @@
 <mat-card class="mat-typography">
     <mat-card-header>
-      <mat-card-title>Add Liquidity</mat-card-title>
+      <mat-card-title>Create Liquidity Pool</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <div *ngIf="isLoading" class="spinner-container">
@@ -16,7 +16,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Your Token</mat-label>
+            <mat-label>Your Token Contract Address</mat-label>
             <input matInput type="text" id="tokenA" formControlName="tokenA">
         </mat-form-field>
 
@@ -26,7 +26,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Liquidity Pair</mat-label>
+            <mat-label>Liquidity Pair Contract Address</mat-label>
             <input matInput type="text" id="tokenB" formControlName="tokenB">
         </mat-form-field>
 
