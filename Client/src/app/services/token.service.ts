@@ -11,7 +11,7 @@ import { Swap } from '../models/swap';
 })
 export class TokenService {
 
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'https://tokenforge.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 

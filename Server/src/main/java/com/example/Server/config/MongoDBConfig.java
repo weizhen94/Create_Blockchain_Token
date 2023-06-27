@@ -16,9 +16,7 @@ public class MongoDBConfig {
 
     @Bean
     public MongoTemplate createMongoTemplate(){
-    //create a MongoClient
     MongoClient client = MongoClients.create(mongoUrl);
-    //put in the name of the database here in this case is "marvel" 
     return new MongoTemplate(client, "token");
     } 
 

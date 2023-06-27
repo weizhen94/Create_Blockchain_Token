@@ -37,12 +37,12 @@ public class EtherscanService {
     }
 
     public ResponseEntity<String> getTransactionStatus(String txHash) {
-        String etherscanUrl = String.format("https://api-sepolia.etherscan.io/api?module=transaction&action=getstatus&txhash=%s&apikey=PUW5YGJQR6SF3BF1XJTHURJKGMCG28M889", txHash);
+        String etherscanUrl = String.format("https://api-sepolia.etherscan.io/api?module=transaction&action=getstatus&txhash=%s&apikey=", txHash);
         return this.restTemplate.execute(etherscanUrl, HttpMethod.GET, null, 
             new ResponseExtractor<ResponseEntity<String>>() {
                 @Override
                 public ResponseEntity<String> extractData(ClientHttpResponse response) throws IOException {
-                    // Manually parse the body to a string
+                    // Parse the body to a string
                     String body = StreamUtils.copyToString(response.getBody(), Charset.defaultCharset());
                     // Build a new ResponseEntity and avoid including the original headers
                     return ResponseEntity.status(response.getStatusCode().value()).body(body);

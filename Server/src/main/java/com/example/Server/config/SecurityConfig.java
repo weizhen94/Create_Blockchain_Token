@@ -66,7 +66,7 @@ public class SecurityConfig {
     
     private CorsConfiguration getCorsConfiguration() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
-    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://tokenforge-one.vercel.app/"));
     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
     corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
     corsConfiguration.setAllowCredentials(true);
