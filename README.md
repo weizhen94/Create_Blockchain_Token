@@ -1,6 +1,6 @@
 # Token Forge
 
-This project was created purely out of my interest in blockchain and cryptocurrency. So pardon the amatuer work. If this project or the topic of blockchain and cryptocurrency interests you as well, feel free to reach out (tokenforge257@gmail.com) for a chat!
+This project was created purely out of my interest in blockchain and cryptocurrency. So pardon the amateur work. If this project or the topic of blockchain and cryptocurrency interests you as well, feel free to reach out (tokenforge257@gmail.com) for a chat!
 
 ## How to use the app?
 
